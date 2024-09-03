@@ -1,38 +1,50 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>LOGIN</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-input
-      type="text"
-      fill="fill"
-      placeholder="Nombre de Usuario"
-      errorText="Nombre de usuario incorrecto"
-      [(ngModel)]="username"
-      maxlength="20"
-      required
-      minlength="5"
-    ></ion-input>
-  </ion-item>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-input
+          type="text"
+          fill="fill"
+          placeholder="Nombre de Usuario"
+          errorText="Nombre de usuario incorrecto"
+          [(ngModel)]="username"
+          maxlength="20"
+          required
+          minlength="5"
+        ></ion-input>
+      </ion-item>
 
-  <ion-item>
-    <ion-input
-      type="password"
-      fill="fill"
-      placeholder="Contraseña"
-      errorText="Nombre de usuario incorrecto"
-      [(ngModel)]="password"
-      required
-      minlength="8" 
-    ></ion-input>
-  </ion-item>
+      <ion-item>
+        <ion-input
+          type="password"
+          fill="fill"
+          placeholder="Contraseña"
+          errorText="Nombre de usuario incorrecto"
+          [(ngModel)]="password"
+          required
+          minlength="8"
+        ></ion-input>
+      </ion-item>
 
-  <ion-button expand="block" (click)="login()">Iniciar Sesión</ion-button>
+      <ion-button expand="block" (click)="login()">Iniciar Sesión</ion-button>
 
-  <ion-button expand="block" (click)="recoverPassword()">Recuperar Contraseña</ion-button>
-
-  <button (click)="onClickMe()">Click me!</button>
+      <ion-button expand="block" (click)="recoverPassword()"
+        >Recuperar Contraseña</ion-button
+      >
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/registro']">Registrarse</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
