@@ -16,12 +16,18 @@
 #container p {
   font-size: 16px;
   line-height: 22px;
-
   color: #8c8c8c;
-
   margin: 0;
 }
 
 #container a {
   text-decoration: none;
+}
+/* BTN DEL REGISTRO PARA PODER HACERLO MAS NOTIO */
+.btn-registrar-home {
+  --background: #4d8dff;          /* Cambia el color de fondo */
+  --color: rgba(112, 7, 7, 0);                 /* Cambia el color del texto */
+  --border-width: 0.10rem;          /* Grosor del borde */
+  --border-color: #000000;        /* Color del borde */
+  --border-style: solid;            /* Cambia el color del texto */
 }

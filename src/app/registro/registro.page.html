@@ -7,6 +7,83 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- Your content here -->
+<ion-content >
+  <!-- INICIO REGISTRO -->
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-input
+          [counter]="true"
+            label="Nombre de Usuario"
+            label-placement="floating"
+            type="text"
+            fill="solid"
+            placeholder="Usuario"
+            errorText="Nombre de usuario incorrecto"
+            maxlength="20"
+            required
+            minlength="5"
+            maxlength="25"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            [counter]="true"
+            type="email"
+            label="Correo Electrónico"
+            label-placement="floating"
+            fill="solid"
+            placeholder="Correo@gmail.cl"
+            errorText="Correo Electrónico No Valido "
+            maxlength="30"
+            required
+            minlength="5"
+            maxlength="40"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            [counter]="true"
+            label="Contraseña"
+            label-placement="floating"
+            type="password"
+            fill="solid"
+            placeholder="********"
+            errorText="Contraseña No Valida"
+            required
+            minlength="8"
+            maxlength="25"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            [counter]="true"
+            label="Confirme Contraseña"
+            label-placement="floating"
+            type="password"
+            fill="solid"
+            placeholder="********"
+            errorText="No Coincide"
+            required
+            minlength="8"
+            maxlength="25"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            type="tel"
+            fill="solid"
+            placeholder="Numero De Telefono"
+            errorText="Contraseña No Coincide"
+            required
+            minlength="8"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-item>
+    <ion-button expand="block">Registrarse</ion-button>
+  </ion-item>
+  <!-- FIN REGISTRO -->
 </ion-content>
