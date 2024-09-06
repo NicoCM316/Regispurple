@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>LOGIN</ion-title>
+    <ion-img  id="img-logo" src="assets/icon/logo.png" class="no-background" alt="No Background Image"></ion-img> <ion-title>hola</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -32,7 +32,8 @@
         ></ion-input>
       </ion-item>
 
-      <ion-button expand="block" (click)="login()">Iniciar Sesión</ion-button>
+      <ion-button expand="fill" (click)="login()">Iniciar Sesión</ion-button> <ion-button [routerLink]="['/registro']" >Registrarse</ion-button>
+
 
       <ion-button expand="block" (click)="recoverPassword()"
         >Recuperar Contraseña</ion-button
@@ -44,7 +45,6 @@
 <ion-footer>
   <ion-toolbar color="primary">
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/registro']" class="btn-registrar-home">Registrarse</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
