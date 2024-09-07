@@ -1,0 +1,28 @@
+<ion-header class="background">
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="background" fullscreen>
+  <ion-card-title class= "ion-padding-top" padding-bottom="25px">
+    <ion-label>
+      <h1 class="h1">Ingreso de Usuario</h1>
+    </ion-label>
+  </ion-card-title>
+<ion-card-content>
+  <form >
+<ion-item>
+      <ion-label position="left">Nombre</ion-label>
+      <ion-input type="text" formControlName="user"></ion-input>
+</ion-item>
+<ion-item> 
+      <ion-label position="left">Contraseña</ion-label>
+      <ion-input type="password" formControlName="password" ></ion-input>
+</ion-item>
+</form>
+</ion-card-content>
+  <ion-button shape="block" width="full" color="primary">INGRESAR</ion-button>
+<div>
+  <h6 class= "h5">¿Olvidaste tu contraseña? </h6>
+</div>
+</ion-content>

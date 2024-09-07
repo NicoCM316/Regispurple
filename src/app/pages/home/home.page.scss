@@ -1,11 +1,9 @@
 #container {
   text-align: center;
-
   position: absolute;
-  left: 0;
-  right: 0;
   top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #container strong {
@@ -37,3 +35,15 @@
   max-width: 200px;
   height: 5rem;
 }
+ion-card-header{
+  text-align: center;
+  color: rgb(0, 0, 0);
+}
+
+ion-toolbar{
+  color: #ffffff
+}
+
+ion-title{
+  color: hsl(0, 0%, 0%)
+  }
