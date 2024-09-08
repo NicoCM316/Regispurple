@@ -14,10 +14,16 @@ export class HomePage {
   // diccionario de usuarios y contraseñas para usar 
   //user nombre de la variable le decimos que sera un nuevo map
   users = new Map<string, string>([
-    ['admin', 'admin123'],
-    ['user1', 'password1'],
-    ['user2', 'password2']
+    ['profesor', 'admin123'],
+    ['alumno1', 'password1'],
+    ['alumno2', 'password2']
   ]);
+  roles = new Map<string, string>([
+    ['profesor', 'profesor'],
+    ['alumno1', 'regular'],
+    ['alumno2', 'regular']
+  ]);
+
 
   constructor(
     private alertController: AlertController,
@@ -44,6 +50,7 @@ export class HomePage {
 
     // usamos el map(mapa) para obtener la contraseña del usuario ingresado
     const validadorPass = this.users.get(cleanUsername); 
+    const userRole = this.roles.get(cleanUsername);
     // aqui en const validPassword creando y en this.users.get estamos obteniendo la contraseña del usuario ingresado
 
     // Imprimir los valores para verificar qué se está obteniendo
@@ -54,12 +61,15 @@ export class HomePage {
 
     // Verificación del login
     if (validadorPass && validadorPass === cleanPassword) {
-      console.log('Valid user');
-      this.router.navigate(['/welcome']);  // Navega a la ruta deseada
+      console.log('Usuario válido');
+      if (userRole === 'profesor') {
+        this.router.navigate(['/welcome']);  // Ruta para administradores
+      } else {
+        this.router.navigate(['/welcomealum']);  // Ruta para usuarios regulares
+      }
     } else {
-      // Si las credenciales no coinciden, muestra una alerta
       await this.presentAlert('Usuario o contraseña incorrectos.');
-      console.log('Invalid user');
+      console.log('Usuario inválido');
     }
   }
 
