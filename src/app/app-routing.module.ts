@@ -23,12 +23,10 @@ const routes: Routes = [
     path: 'registro',
     loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
   },
+  
   {
-    path: 'prueba',
-    loadChildren: () => import('./pages/prueba/prueba.module').then( m => m.PruebaPageModule)
-  },  {
     path: 'welcomealum',
-    loadChildren: () => import('./welcomealum/welcomealum.module').then( m => m.WelcomealumPageModule)
+    loadChildren: () => import('./pages/welcomealum/welcomealum.module').then( m => m.WelcomealumPageModule)
   },
 
 

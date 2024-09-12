@@ -21,12 +21,20 @@
 #container a {
   text-decoration: none;
 }
+ion-toolbar {
+  --background: #4C4745;  // Cambiar el fondo del toolbar también, si es necesario
+  --color: white;           // Cambiar el color del texto si lo deseas
+}
+ion-title{
+  color: hsl(0, 0%, 100%)
+  }
+  
 /* BTN DEL REGISTRO PARA PODER HACERLO MAS NOTIO */
 .btn-registrar-home {
-  --background: #4d8dff;          /* Cambia el color de fondo */
-  --color: rgba(112, 7, 7, 0);                 /* Cambia el color del texto */
+  --background: #ffffff;      // Color de fondo de los botones
+  --color: #4C4745;                   /* Cambia el color del texto */
   --border-width: 0.10rem;          /* Grosor del borde */
-  --border-color: #000000;        /* Color del borde */
+  --border-color: #ffffff;        /* Color del borde */
   --border-style: solid;            /* Cambia el color del texto */
 }
 
@@ -40,10 +48,9 @@ ion-card-header{
   color: rgb(0, 0, 0);
 }
 
-ion-toolbar{
-  color: #ffffff
-}
+#btn-login, #btn-registro, #btn-recovery {
 
-ion-title{
-  color: hsl(0, 0%, 0%)
+    --background: #4C4745;      // Color de fondo de los botones
+    --color: #ffffff;           // Color del texto de los botones
   }
+

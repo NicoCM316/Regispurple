@@ -15,7 +15,8 @@
       <ion-button expand="block">Correo</ion-button>
     </ion-menu-toggle>
     <div class="logout-section">
-      <ion-button expand="block" color="danger" class="logout-button" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+      <ion-button expand="block" color="danger" class="logout-button" (click)="cerrarSesion()">Cerrar
+        Sesión</ion-button>
     </div>
   </ion-content>
 
@@ -31,9 +32,9 @@
       <ion-title>RegistrAPP</ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content class="ion-padding">
-    <h1>Bienvenido Profesor, {{ username }}</h1>
+    <h1>Bienvenido Alumnx, {{ username }}</h1>
 
     <div class=container-perfil>
       <ion-avatar>
@@ -54,9 +55,6 @@
               </ion-thumbnail>
               <ion-label>Matematica Aplicada <br> Inicio=12:30pm <br> Fin=1.20pm</ion-label>
             </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
       
             <ion-item>
               <ion-thumbnail slot="start">
@@ -64,9 +62,6 @@
               </ion-thumbnail>
               <ion-label>Etica Laboral <br> Inicio=2:30pm <br> Fin=3.20pm</ion-label>
             </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
       
             <ion-item>
               <ion-thumbnail slot="start">
@@ -74,19 +69,15 @@
               </ion-thumbnail>
               <ion-label>Base De Datos <br> Inicio=4:30pm <br> Fin=5.20pm</ion-label>
             </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
       
             <ion-item lines="none">
               <ion-thumbnail slot="start">
                 <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
               </ion-thumbnail>
               <ion-label>Programacion <br> Inicio=6:30pm <br> Fin=7.20pm</ion-label>
+              
+
             </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
           </ion-list>
         </ion-card-content>
       </ion-card>
@@ -96,7 +87,8 @@
       <h2>CALENDARIO</h2>
       <ion-datetime presentation="date"></ion-datetime>
     </div>
-    
   </ion-content>
+  <ion-button expand="block" shape="round" style="--background: rgb(212, 126, 50);">
+    ESCANEAR QR 📷
+  </ion-button>
 </div>
-

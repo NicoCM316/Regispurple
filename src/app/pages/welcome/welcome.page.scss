@@ -1,0 +1,59 @@
+ion-menu, ion-header {
+  background-color: #4C4745;
+  
+  ion-toolbar {
+    --background: #4C4745;  // Cambiar el fondo del toolbar también, si es necesario
+    color: white;           // Cambiar el color del texto si lo deseas
+  }
+
+  ion-content {
+    background-color: #4C4745;  // Aplicar el mismo color de fondo al contenido
+  }
+
+  ion-button {
+    --background: #ffffff;      // Color de fondo de los botones
+    --color: #4C4745;           // Color del texto de los botones
+  }
+}
+
+
+.logout-section {
+  position: fixed;
+  bottom: 1%; /* Ajusta este valor para la distancia deseada desde el borde inferior */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 90%; /* Ajusta el ancho del botón según sea necesario */
+
+}
+.container-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#user-img {  
+  width: 100%;
+  height: 100%;
+  max-width: 1500px;
+  min-width: 10rem;
+  max-height: 1500px;
+  min-height: 10rem;
+  border-radius: 50%;
+  margin-right: 150%;
+  margin-left: -100%;
+}
+
+#username-perfil {
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 7rem;
+  margin-bottom: 0.75rem;
+}
+
+.btn-ScanQR {
+  position: relative;
+  z-index: 100;
+}

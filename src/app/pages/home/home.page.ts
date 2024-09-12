@@ -10,18 +10,21 @@ import { Router } from '@angular/router';
 export class HomePage {
   username: string = '';
   password: string = '';
+  menuType: string = 'overlay';
 
   // diccionario de usuarios y contraseñas para usar 
   //user nombre de la variable le decimos que sera un nuevo map
   users = new Map<string, string>([
-    ['profesor', 'admin123'],
-    ['alumno1', 'password1'],
-    ['alumno2', 'password2']
+    ['Juan', 'admin123'],
+    ['Belen', 'admin123'],
+    ['Pepito', 'password1'],
+    ['Feña', 'password2']
   ]);
   roles = new Map<string, string>([
-    ['profesor', 'profesor'],
-    ['alumno1', 'regular'],
-    ['alumno2', 'regular']
+    ['Juan', 'profesor'],
+    ['Belen', 'profesor'],
+    ['Pepito', 'regular'],
+    ['Feña', 'regular']
   ]);
 
 
@@ -63,9 +66,11 @@ export class HomePage {
     if (validadorPass && validadorPass === cleanPassword) {
       console.log('Usuario válido');
       if (userRole === 'profesor') {
-        this.router.navigate(['/welcome']);  // Ruta para administradores
-      } else {
-        this.router.navigate(['/welcomealum']);  // Ruta para usuarios regulares
+        this.router.navigate(['/welcome'], { queryParams: { username: this.username } });
+          // Ruta para administradores
+      } 
+      if (userRole === 'regular') {
+        this.router.navigate(['/welcomealum'], { queryParams: { username: this.username } });
       }
     } else {
       await this.presentAlert('Usuario o contraseña incorrectos.');
@@ -79,6 +84,7 @@ export class HomePage {
       { queryParams: { username: this.username } });
   }
 
+  
 }
  
 /*

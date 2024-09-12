@@ -3,3 +3,16 @@ ion-card-header{
     text-align: center;
 }
 
+ion-toolbar {
+    --background: #4C4745;  // Cambiar el fondo del toolbar también, si es necesario
+    --color: white;           // Cambiar el color del texto si lo deseas
+  }
+  ion-title{
+    color: hsl(0, 0%, 100%)
+    }
+  
+  #btn-registrarse
+  {
+    --background: #4C4745;      // Color de fondo de los botones
+    --color: #ffffff;           // Color del texto de los botones
+  }

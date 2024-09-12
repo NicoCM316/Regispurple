@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; 
 
 @Component({
-  selector: 'app-welcome',
-  templateUrl: './welcome.page.html',
-  styleUrls: ['./welcome.page.scss'],
+  selector: 'app-welcomealum',
+  templateUrl: './welcomealum.page.html',
+  styleUrls: ['./welcomealum.page.scss'],
 })
-export class WelcomePage implements OnInit {
+export class WelcomealumPage implements OnInit {
   username: string = ''; // Variable para el username
 
   constructor(private route: ActivatedRoute, private router: Router) { }
@@ -17,8 +17,7 @@ export class WelcomePage implements OnInit {
       this.username = params['username'] || ''; // Captura el username de la URL
     });
   }
-
-   cerrarSesion() { 
+  cerrarSesion() { 
     if (confirm('¿Desea cerrar sesión?')) {
       this.router.navigate(['/home']);
     }

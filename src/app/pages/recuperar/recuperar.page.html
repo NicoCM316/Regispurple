@@ -1,6 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button default-href="#"></ion-back-button>
     </ion-buttons>
@@ -12,7 +11,7 @@
 <ion-content [fullscreen]="true">
   <div id="container">
     <!-- Mostrar el nombre de usuario recibido -->
-    <p>Bienvenido, {{ username }}</p>
+    <p>Bienvenido, </p>
 
     <!-- Campo para la nueva contraseña -->
     <ion-item>
@@ -20,6 +19,6 @@
       <ion-input ></ion-input>
     </ion-item>
 
-    <ion-button expand="block" (click)="Home()">Recuperar</ion-button>
+    <ion-button expand="block" id="btn-recuperar" (click)="Home()">Recuperar</ion-button>
   </div>
 </ion-content>
