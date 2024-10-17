@@ -1,56 +1,83 @@
-#container {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-ion-toolbar {
-  --background: #4C4745;  // Cambiar el fondo del toolbar también, si es necesario
-  --color: white;           // Cambiar el color del texto si lo deseas
-}
-ion-title{
-  color: hsl(0, 0%, 100%)
-  }
-  
-/* BTN DEL REGISTRO PARA PODER HACERLO MAS NOTIO */
-.btn-registrar-home {
-  --background: #ffffff;      // Color de fondo de los botones
-  --color: #4C4745;                   /* Cambia el color del texto */
-  --border-width: 0.10rem;          /* Grosor del borde */
-  --border-color: #ffffff;        /* Color del borde */
-  --border-style: solid;            /* Cambia el color del texto */
-}
-
-#img-logo {
+#content {
+  background-image: url(../../../assets/img/bg-principal-home.jpg);
+  font: sans-serif;
+  height: 100vh; /* Usa vh en lugar de % */
   width: 100%;
-  max-width: 200px;
-  height: 5rem;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
 }
-ion-card-header{
+
+
+#container-home-cont {
+  --background: #d7d8d448;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ffffff;
+  padding: 15px;
+  max-width: 350px;
+  min-width: 80%;
+  height: 100vh; /* Ajusta la altura según el contenido */
+  max-height: 470px;
+  margin: auto; /* Centra horizontal y verticalmente en flexbox */
+  border-radius: 20px;
+  position: relative; /* Cambiado a relative */
+  background-size: cover;
+}
+
+
+
+ion-toolbar {
+  --background: #232423; // Cambiar el fondo del toolbar también, si es necesario
+}
+
+ion-input {
+  --background: #232423; // Color de fondo de los inputs
+  --color: #ffffff; // Color del texto de los inputs
+  --border-color: #00000000; // Color del borde de los inputs
+  --border-radius: 10px; // Radio de los bordes de los inputs
+  --padding-start: 15px; // Espaciado interno del input
+  --padding-end: 15px; // Espaciado interno del input
+  --padding-top: 5px; // Espaciado interno del input
+  --padding-bottom: 10px; // Espaciado interno del input
+}
+
+ion-title {
+  color: hsl(0, 0%, 100%);
+  font-size: 35px;
   text-align: center;
-  color: rgb(0, 0, 0);
+
 }
 
-#btn-login, #btn-registro, #btn-recovery {
+ion-card-title {
+  color: #ffffff;
+  font-size: 35px;
+  text-align: center;
+}
 
-    --background: #4C4745;      // Color de fondo de los botones
-    --color: #ffffff;           // Color del texto de los botones
-  }
+ion-card-header {
+  text-align: center;
+}
+
+ion-button {
+  --background: #232423; // Color de fondo de los botones
+  --color: #ffffff; // Color del texto de los botones
+  font: 1em sans-serif;
+  --border-color: #00000000; // Color del borde de los inputs
+  --border-radius: 10px; // Radio de los bordes de los inputs
+  --padding-start: 15px; // Espaciado interno del input
+  --padding-end: 15px; // Espaciado interno del input
+  --padding-top: 5px; // Espaciado interno del input
+  --padding-bottom: 10px; // Espaciado interno del in
+}
+
+ion-tab-bar {
+  --background: #1c1c1e; /* Color de fondo de la barra de navegación */
+}
+
+ion-tab-button {
+  --color-selected: #1df47a; /* Color de icono y texto al estar seleccionados */
+  --color: #ffffff; /* Color de icono y texto no seleccionados */
+}
 

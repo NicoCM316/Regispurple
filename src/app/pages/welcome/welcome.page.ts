@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-welcome',
@@ -9,7 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class WelcomePage implements OnInit {
   username: string = ''; // Variable para el username
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, 
+    private router: Router, private menu: MenuController) { }
 
   ngOnInit() {
     // Suscribirse a los parámetros de la URL para obtener el username
@@ -23,4 +25,15 @@ export class WelcomePage implements OnInit {
       this.router.navigate(['/home']);
     }
   }
+
+btnClickPrueba() {
+  console.log('click en boton');
+  this.router.navigate(['/recuperar']);
+}
+
+
+openMenu() {
+  this.menu.open();
+}
+
 }

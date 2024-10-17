@@ -1,13 +1,7 @@
-<ion-menu contentId="main-content">
-
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>RegistrAPP</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-content class="ion-padding">
-    <ion-menu-toggle>
+<!-- Menú Lateral -->
+<ion-menu contentId="main-content" side="start">
+  <ion-content>
+    <ion-menu-toggle auto-hide="false">
       <ion-button expand="block">Home</ion-button>
       <ion-button expand="block">Horarios de clases</ion-button>
       <ion-button expand="block">Notas</ion-button>
@@ -18,85 +12,18 @@
       <ion-button expand="block" color="danger" class="logout-button" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
     </div>
   </ion-content>
-
 </ion-menu>
 
-<div class="ion-page" id="main-content">
-
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>RegistrAPP</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content class="ion-padding">
+<!-- Contenido Principal -->
+<ion-content id="main-content" class="ion-padding contenido-p">
+  <div id="content">
+    <ion-button (click)="openMenu()" class="btn-menu">+</ion-button>
     <h1>Bienvenido Profesor, {{ username }}</h1>
-
-    <div class=container-perfil>
-      <ion-avatar>
-        <img src="assets/icon/user-img.jpg" id="user-img">
-      </ion-avatar>
+    <div class="container-perfil">
       <ion-label id="username-perfil">{{ username }}</ion-label>
     </div>
     <div class="cont-asignaturas">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>HORARIO DE CLASES</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <ion-list>
-            <ion-item>
-              <ion-thumbnail slot="start">
-                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-              </ion-thumbnail>
-              <ion-label>Matematica Aplicada <br> Inicio=12:30pm <br> Fin=1.20pm</ion-label>
-            </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
-      
-            <ion-item>
-              <ion-thumbnail slot="start">
-                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-              </ion-thumbnail>
-              <ion-label>Etica Laboral <br> Inicio=2:30pm <br> Fin=3.20pm</ion-label>
-            </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
-      
-            <ion-item>
-              <ion-thumbnail slot="start">
-                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-              </ion-thumbnail>
-              <ion-label>Base De Datos <br> Inicio=4:30pm <br> Fin=5.20pm</ion-label>
-            </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
-      
-            <ion-item lines="none">
-              <ion-thumbnail slot="start">
-                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-              </ion-thumbnail>
-              <ion-label>Programacion <br> Inicio=6:30pm <br> Fin=7.20pm</ion-label>
-            </ion-item>
-            <ion-button class="btn-ScanQR" expand="block" shape="round" style="--background: rgb(240, 129, 33);">
-              GENERAR QR 📷
-            </ion-button>
-          </ion-list>
-        </ion-card-content>
-      </ion-card>
+      <!-- Aquí va el contenido principal -->
     </div>
-
-    <div class="cont-calendario">
-      <h2>CALENDARIO</h2>
-      <ion-datetime presentation="date"></ion-datetime>
-    </div>
-    
-  </ion-content>
-</div>
-
+  </div>
+</ion-content>

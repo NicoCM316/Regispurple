@@ -20,16 +20,9 @@ const routes: Routes = [
     loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomePageModule)
   },
   {
-    path: 'registro',
-    loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
-  },
-  
-  {
     path: 'welcomealum',
     loadChildren: () => import('./pages/welcomealum/welcomealum.module').then( m => m.WelcomealumPageModule)
   },
-
-
 
 ];
 
