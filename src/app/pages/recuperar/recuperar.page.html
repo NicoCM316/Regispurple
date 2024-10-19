@@ -1,0 +1,21 @@
+<ion-content [fullscreen]="true">
+  <div id=content>
+    <ion-card id="container-home-cont">
+
+        <ion-card-header>
+          <ion-card-title>RegistrAPP</ion-card-title>
+          <br>
+          <ion-card-title>Recuperacion De Contraseña</ion-card-title>
+        </ion-card-header>
+
+        <ion-input [counter]="true" label="Correo Electronico"
+        label-placement="floating" type="text" 
+        placeholder="example@example.com" errorText="No coincide con ningun correo"
+        maxlength="20" minlength="5" maxlength="25"
+        [(ngModel)]="username"></ion-input>
+
+        <ion-button expand="block" id="btn-recuperar" (click)="Home()">Recuperar</ion-button>
+
+    </ion-card>
+  </div>
+</ion-content>
