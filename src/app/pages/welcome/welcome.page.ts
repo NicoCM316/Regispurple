@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-welcome',
@@ -8,36 +9,78 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['./welcome.page.scss'],
 })
 export class WelcomePage implements OnInit {
-  username: string = ''; // Variable para el username
+  cursos: any[] = [];
+  userId: string | null = '';  // Declarar la propiedad userId aquí
+  nombreCompleto: string = '';
+  perfil: string = '';
 
-  // Lista inicial de elementos para las tarjetas
   items = [
     { title: 'Card title 1', text: 'Descripción de la tarjeta 1' },
     { title: 'Card title 2', text: 'Descripción de la tarjeta 2' },
-    // Puedes añadir más ítems iniciales aquí
   ];
 
   constructor(
     private route: ActivatedRoute, 
     private router: Router, 
-    private menu: MenuController
-  ) { }
+    private menu: MenuController,
+    private authService: AuthService
+  ) {}
 
-  ngOnInit() {
-    // Suscribirse a los parámetros de la URL para obtener el username
-    this.route.queryParams.subscribe(params => {
-      this.username = params['username'] || ''; // Captura el username de la URL
-    });
+  async ngOnInit() {
+    try {
+      // Obtener la información del usuario
+      const userInfo = await this.authService.getUserInfo();
+      userInfo.subscribe(
+        (response: any) => {
+          console.log('Información del usuario:', response);
+          this.nombreCompleto = response.data.nombre_completo;  // Mostrar el nombre completo del usuario
+          this.perfil = response.data.perfil;  // Mostrar el perfil del usuario
+          const correo = response.data.correo;  // Obtener el correo del usuario
+  
+          // Obtener los cursos del estudiante usando su correo
+          if (correo) {
+            this.obtenerCursosPorCorreo(correo);
+          } else {
+            console.error('No se pudo obtener el correo del usuario.');
+          }
+        },
+        (error: any) => {
+          console.error('Error al obtener la información del usuario:', error);  // Ver el error completo
+        }
+      );
+    } catch (error) {
+      console.error('Error en el proceso de autenticación o carga de cursos:', error);
+    }
+  }
+  
+  async obtenerCursosPorCorreo(correo: string) {
+    try {
+      const cursosObs = await this.authService.getCursosPorCorreo(correo);
+      cursosObs.subscribe(
+        (response: any) => {
+          console.log('Cursos obtenidos:', response);  // Verifica si los cursos llegan correctamente
+          this.cursos = response.cursos ? response.cursos : [];  // Ajustar según la estructura de la API
+        },
+        (error: any) => {
+          console.error('Error al obtener los cursos por correo:', error);  // Ver el error completo
+        }
+      );
+    } catch (error) {
+      console.error('Error al buscar los cursos por correo:', error);
+    }
   }
 
-  cerrarSesion() { 
+  verDetallesCurso(curso: any) {
+    this.router.navigate(['/curso-detalle', curso.id]);
+  }
+
+  cerrarSesion() {
     if (confirm('¿Desea cerrar sesión?')) {
       this.router.navigate(['/home']);
     }
   }
 
   btnClickPrueba() {
-    console.log('click en boton');
     this.router.navigate(['/recuperar']);
   }
 
@@ -45,13 +88,11 @@ export class WelcomePage implements OnInit {
     this.menu.open();
   }
 
-  // Función para cargar más contenido cuando llegue al final del scroll
   loadMoreContent(event: any) {
     const scrollPosition = event.target.scrollLeft + event.target.offsetWidth;
     const maxScroll = event.target.scrollWidth;
 
     if (scrollPosition >= maxScroll - 1) {
-      // Añade más elementos a la lista
       this.items = [
         ...this.items,
         { title: 'New Card', text: 'Descripción de la nueva tarjeta' }

@@ -26,7 +26,12 @@
   background-size: cover;
 }
 
-
+ion-item {
+  --background: #232423; // Color de fondo de los items
+  --color: #c1c1c100; // Color del texto de los items
+  --border-color: #00000000; // Color del borde de los items
+  --border-radius: 15px; // Radio de los bordes de los items
+}
 
 ion-toolbar {
   --background: #232423; // Cambiar el fondo del toolbar también, si es necesario

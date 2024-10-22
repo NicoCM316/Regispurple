@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,110 +9,88 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  username: string = '';
-  password: string = '';
-  menuType: string = 'overlay';
 
-  // diccionario de usuarios y contraseñas para usar 
-  //user nombre de la variable le decimos que sera un nuevo map
-  users = new Map<string, string>([
-    ['Juanin', 'admin123'],
-    ['Belen', 'admin123'],
-    ['Pepito', 'password1'],
-    ['Feña', 'password2']
-  ]);
-  roles = new Map<string, string>([
-    ['Juanin', 'profesor'],
-    ['Belen', 'profesor'],
-    ['Pepito', 'regular'],
-    ['Feña', 'regular']
-  ]);
+  correo: string = '';
+  password: string = '';
+  perfil: string = '';  
 
 
   constructor(
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
-  // Método para mostrar alerta
-  async presentAlert(message: string) {
-    const alert = await this.alertController.create({
-      header: 'Alerta',
-      subHeader: '',
-      message: message,
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
-
-  // Función para login con mensajes de depuración
-  async login() {
-
-    // lo ocupamos para limpiar los inputs 
-    const cleanUsername = this.username.trim();
-    const cleanPassword = this.password.trim();
-
-    // usamos el map(mapa) para obtener la contraseña del usuario ingresado
-    const validadorPass = this.users.get(cleanUsername); 
-    const userRole = this.roles.get(cleanUsername);
-    // aqui en const validPassword creando y en this.users.get estamos obteniendo la contraseña del usuario ingresado
-
-    // Imprimir los valores para verificar qué se está obteniendo
-    //esto lo pueden ver con el f12 en la consola del navegador
-    console.log('usuario ingresado:', cleanUsername);
-    console.log('contraseña ingresada:', cleanPassword);
-    console.log('contraseña esperada:', validadorPass);
-
-    // Verificación del login
-    if (validadorPass && validadorPass === cleanPassword) {
-      console.log('Usuario válido');
-      if (userRole === 'profesor') {
-        this.router.navigate(['/welcome'], { queryParams: { username: this.username } });
-          // Ruta para administradores
-      } 
-      if (userRole === 'regular') {
-        this.router.navigate(['/welcomealum'], { queryParams: { username: this.username } });
+  
+  login() {
+    this.authService.login(this.correo, this.password).subscribe(
+      async (response) => {
+        // Si el token y la autenticación son correctos
+        if (response.auth && response.auth.token) {
+          // Guardar el token de autenticación
+          await this.authService.saveToken(response.auth.token);
+  
+          // Obtener el perfil directamente desde la respuesta del login
+          const perfil = response.data.perfil;
+  
+          // Redirigir según el perfil del usuario
+          if (perfil === 'estudiante') {
+            this.router.navigate(['/welcomealum']);  // Página para estudiantes
+          } else if (perfil === 'docente') {
+            this.router.navigate(['/welcomedoc']);  // Página para docentes
+          } else {
+            console.error('Perfil desconocido o faltante:', perfil);
+            const alert = await this.alertController.create({
+              header: 'Error',
+              message: 'Perfil desconocido. No se puede redirigir.',
+              buttons: ['OK'],
+            });
+            await alert.present();
+          }
+  
+          // Guardar también el perfil en el almacenamiento local por si lo necesitas más tarde
+          await this.authService.saveUserProfile(perfil, response.data.nombre_completo);
+          
+        } else {
+          // Mostrar alerta si no se proporcionó el token o hubo un problema
+          const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'Correo o contraseña incorrectos',
+            buttons: ['OK'],
+          });
+          await alert.present();
+        }
+      },
+      async (error) => {
+        // Manejo de errores en caso de que la solicitud falle
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'Error en el servidor. Por favor, intenta de nuevo más tarde.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        console.error('Error en el inicio de sesión:', error);
       }
-    } else {
-      await this.presentAlert('Usuario o contraseña incorrectos.');
-      console.log('Usuario inválido');
-    }
+    );
   }
 
   recoveryPassword() { 
     // metodo para recuperar la del username en realidad para ocuparlo en recuperar contraseña
     this.router.navigate(['/recuperar'], 
-      { queryParams: { username: this.username } });
+      { queryParams: { username: this.correo } });
   }
 
+
+    // Método para mostrar alerta
+    async presentAlert(message: string) {
+      const alert = await this.alertController.create({
+        header: 'Alerta',
+        subHeader: '',
+        message: message,
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
+
   
-
- 
-/*
-
-aqui les dejo algunos metodos que se pueden ocupar en el map
-que encontre en los fotos 
-
-para crear un nuevo Map
-const users = new Map<string, string>();
-
-para añadir pares clave-valor (usuario-contraseña)
-users.set('admin', 'admin123');
-users.set('user1', 'password1');
-users.set('user2', 'password2');
-
-para obtener el valor asociado a una clave
-const password = users.get('admin'); // 'admin123'
-
-para poder verificar si una clave existe
-const hasUser1 = users.has('user1'); // true
-
-para poder eliminar una clave
-users.delete('user2');
-
-para limpiar todos los pares clave-valor
-users.clear();
-
-*/
-  
-  }
+}
