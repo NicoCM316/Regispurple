@@ -26,7 +26,11 @@ const routes: Routes = [
     path: 'welcomealum',
     loadChildren: () => import('./pages/welcomealum/welcomealum.module').then( m => m.WelcomealumPageModule),
     canActivate: [AuthGuard]
+  },  {
+    path: 'modal-opciones',
+    loadChildren: () => import('./modal-opciones/modal-opciones.module').then( m => m.ModalOpcionesPageModule)
   },
+
 
 ];
 
