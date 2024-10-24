@@ -1,123 +1,167 @@
 #content {
-  background-image: url(../../../../assets/bg/bg-welcome.jpg);
-  font-family: sans-serif;
-  height: 100vh;
-  width: 100%;
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding-top: 6em;
-  padding-bottom: 60px;
-  overflow-y: hidden;
-}
-
-.scroll-container-wrapper {
-  width: 90vw; /* Ajustado a 90% del ancho de la ventana */
-  height: 32vh; /* Mantiene la altura anterior */
-  overflow: hidden; /* Oculta cualquier contenido que sobresalga */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #00000068;
-  border-radius: 8px;
-  background-color: #676767;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 4em; /* Mantiene el margen superior */
-}
-
-.horizontal-scroll {
-  display: flex;
-  align-items: center;
-  overflow-x: auto; /* Permite el desplazamiento horizontal */
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  white-space: nowrap; /* Asegura que los elementos no se envuelvan en la siguiente línea */
-}
-
-.scroll-container {
-  display: flex;
-  align-items: center;
-}
-
-.card-wrapper {
-  flex: none; /* Evita que el tamaño de las tarjetas cambie */
-  width: 220px; /* Tamaño de las tarjetas */
-  height: auto; /* Ajusta la altura automáticamente */
-  margin-right: 20px; /* Ajusta el margen entre las tarjetas para una mejor separación */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff; /* Fondo blanco para las tarjetas */
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.card-wrapper:last-child {
-  margin-right: 0; /* Elimina el margen derecho de la última tarjeta para alinearse correctamente */
-}
-
-.card img {
-  width: 100%; /* Ajusta la imagen al 100% del ancho de la tarjeta */
-  height: auto; /* Mantiene la proporción de la imagen */
-  max-height: 120px; /* Reducido un poco más desde 160px */
-  object-fit: cover; /* Ajusta la imagen sin distorsionar */
-}
-
-.card-body {
-  padding: 15px;
-  text-align: center;
-}
-
-.button-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  border: groove;
-  border-color: #000000;
-  border-radius: 20px 20px 0px 0px; 
-  justify-content: space-around;
-  padding: 5px;
-  background-color: hsl(0, 0%, 15%); /* Fondo semi-transparente */
-}
-
-.btn {
-  flex: 1;
-  text-align: center;
-  font-size: 14px;
-  background-color: hsl(0, 0%, 15%);
-  color: #ffffff;
-  border-radius: 20px;
-}
-
-#cont-title {  
-  position: absolute;
-  top: 0; /* Posición en la parte superior de la pantalla */
-  width: 100%;
-  display: flex;
-  border: groove;
-  border-color: #000000;
-  border-radius: 0px 0px 20px 20px; /* Bordes redondeados en la parte inferior */
-  justify-content: space-around;
-  padding: 5px;
-  background-color: hsl(0, 0%, 33%); /* Fondo semi-transparente */
-}
-
-#cont-title h3 {
-  color: #fff;
-  margin-top: 10px;
-  font-size: 18px;
-  font-weight: 300; /* Usar font-weight más ligero */
-  letter-spacing: 8px; /* Reducir ligeramente el espaciado de letras para más legibilidad */
-  text-align: center;
-  text-shadow: 4px 4px 6px rgba(128, 128, 128, 0.692); /* Mejora el sombreado para más contraste */
-  text-transform: uppercase;
-  margin: 20px 0 20px 0; /* Ajuste más preciso de márgenes */
-  line-height: 1.2; /* Mejora la separación entre las líneas */
-}
+    background-image: url(../../../../assets/img/bg-principal-home.jpg);
+    font-family: sans-serif;
+    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 6em;
+    padding-bottom: 60px;
+    overflow-y: hidden;
+  }
+  
+  .scroll-container-wrapper {
+    width: 90vw;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #00000068;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 2em;
+    padding: 1em;
+  }
+  
+  .horizontal-scroll {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow-x: auto;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .scroll-container {
+    display: flex;
+    border: 15px;
+    align-items: flex-start;
+  }
+  
+  .card-wrapper {
+    flex: none;
+    width: 300px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #000000f1;
+    border-radius: 8px;
+    border: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card-wrapper:hover {
+    transform: scale(1.05);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 50px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .card-body {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .card-title {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .card-text {
+    font-size: 11px;
+    color: #666;
+  }
+  
+  .button-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 7px;
+    background-color: #1a1a1a;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  .btn {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    color: #ffffff;
+    border-radius: 15px;
+    padding: 0px;
+    max-width: 60px;
+    max-height: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .btn svg {
+    width: 26px;
+    height: 26px;
+  }
+  
+  #cont-title {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0 0 20px 20px;
+  }
+  
+  #cont-title h3 {
+    color: #fff;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-align: center;
+    text-shadow: 4px 4px 6px rgba(128, 128, 128, 0.692);
+    text-transform: uppercase;
+    margin: 10px 0;
+    line-height: 1.2;
+  }
+  
+  .img-perfil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 10px;
+  }
+  
+  .qr-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .qr-container p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+  }
