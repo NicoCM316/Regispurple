@@ -17,6 +17,7 @@ export class WelcomePage implements OnInit {
   perfil: string = '';
   correoUsuario: string = '';  // Definir la propiedad para el correo del usuario
   imgPerfil: string = '';  // Agregar la propiedad para la imagen de perfil
+  cursoID: string = '';
   codigoMatriculaQR: string = '';
 
   items = [
@@ -83,29 +84,7 @@ export class WelcomePage implements OnInit {
 
   // Abrir formulario para crear una clase en un curso específico
   async verDetallesCurso(curso: any) {
-    const alert = await this.alertController.create({
-      header: 'Detalles del Curso',
-      message: `
-            Nombre:${curso.nombre}
-            Descripción: ${curso.descripcion}
-            Código Matrícula:${curso.codigo_matricula} <!-- Mostrar el código de matrícula -->
-      `,
-      buttons: [
-        {
-          text: 'Cerrar',
-          role: 'cancel',
-        },
-        {
-          text: 'Generar QR',
-          handler: () => {
-            // Asignar el código de matrícula para generar el QR
-            this.codigoMatriculaQR = curso.codigo_matricula;
-          }
-        }
-      ]
-    });
-  
-    await alert.present();
+    this.router.navigate([`/curso/${curso.id}`]);  // Redirige a la ruta con el id del curso
   }
   
 

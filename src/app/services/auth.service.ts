@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
 import { tap, catchError } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';  // Importa esto para convertir el Observable a Promise
 
 @Injectable({
   providedIn: 'root'
@@ -47,16 +48,18 @@ export class AuthService {
       })
     );
   }
-
-  // Guardar token en el almacenamiento
   async saveToken(token: string): Promise<void> {
-    await this.storage.set('auth_token', token);
-  }
 
-  // Obtener token del almacenamiento
-  async getToken(): Promise<string | null> {
-    return await this.storage.get('auth_token');
+    // Implementation to save the token, e.g., in local storage
+
+    localStorage.setItem('authToken', token);
+
   }
+// Obtener token del almacenamiento
+async getToken(): Promise<string | null> {
+  return await this.storage.get('auth_token');
+}
+  
 
   // Recuperar contraseña
   recuperarPassword(correo: string): Observable<any> {
@@ -118,9 +121,9 @@ export class AuthService {
   }
 
   // Crear una nueva clase en un curso específico
-  async crearClase(idCurso: number, claseData: any): Promise<Observable<any>> {
+  async crearClase(id: number, claseData: any): Promise<Observable<any>> {
     const headers = await this.getAuthHeaders();
-    const url = `${this.apiUrl}/cursos/${idCurso}/clase`;
+    const url = `${this.apiUrl}/cursos/${id}/clase`;
     return this.http.post(url, claseData, { headers })
       .pipe(
         catchError((error) => {
@@ -129,6 +132,20 @@ export class AuthService {
         })
       );
   }
+
+  async getCursoPorID(cursoID: string): Promise<any> {
+    const headers: HttpHeaders = await this.getAuthHeaders();  // Esperamos a que se resuelvan las cabeceras
+    return lastValueFrom(
+      this.http.get(`${this.apiUrl}/cursos/${cursoID}`, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error obteniendo curso por ID:', error);
+          return throwError(() => new Error('Failed to fetch course by ID'));
+        })
+      )
+    );
+  }
+
 
   // Obtener cursos en los que el estudiante está inscrito
   async getCursosEstudiante(userId: string): Promise<Observable<any>> {
