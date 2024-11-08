@@ -28,48 +28,38 @@ export class WelcomePage implements OnInit {
 
   async ngOnInit() {
     try {
-      // Obtener la información del usuario
+      // Obtener la información del usuario autenticado
       const userInfo = await this.authService.getUserInfo();
       userInfo.subscribe(
-        (response: any) => {
-          console.log('Información del usuario:', response);
-          this.nombreCompleto = response.data.nombre_completo;  // Mostrar el nombre completo del usuario
-          this.perfil = response.data.perfil;  // Mostrar el perfil del usuario
-          const correo = response.data.correo;  // Obtener el correo del usuario
-  
-          // Obtener los cursos del estudiante usando su correo
-          if (correo) {
-            this.obtenerCursosPorCorreo(correo);
-          } else {
-            console.error('No se pudo obtener el correo del usuario.');
-          }
+        (response) => {
+          this.nombreCompleto = response.data.nombre_completo;
+          this.perfil = response.data.perfil;
         },
-        (error: any) => {
-          console.error('Error al obtener la información del usuario:', error);  // Ver el error completo
+        (error) => {
+          console.error('Error al obtener la información del usuario:', error);
         }
       );
-    } catch (error) {
-      console.error('Error en el proceso de autenticación o carga de cursos:', error);
-    }
-  }
   
-  async obtenerCursosPorCorreo(correo: string) {
-    try {
-      const cursosObs = await this.authService.getCursosPorCorreo(correo);
+      // Obtener los cursos del usuario autenticado
+      const cursosObs = await this.authService.getCursos();
       cursosObs.subscribe(
         (response: any) => {
-          console.log('Cursos obtenidos:', response);  // Verifica si los cursos llegan correctamente
-          this.cursos = response.cursos ? response.cursos : [];  // Ajustar según la estructura de la API
+          console.log('Respuesta de la API para los cursos:', response);
+          if (response.cursos && response.cursos.length > 0) {
+            this.cursos = response.cursos;
+          } else {
+            console.log('No hay cursos disponibles para este usuario.');
+          }
         },
-        (error: any) => {
-          console.error('Error al obtener los cursos por correo:', error);  // Ver el error completo
+        (error) => {
+          console.error('Error al obtener los cursos:', error);
         }
       );
     } catch (error) {
-      console.error('Error al buscar los cursos por correo:', error);
+      console.error('Error en la solicitud de los cursos:', error);
     }
   }
-
+  
   verDetallesCurso(curso: any) {
     this.router.navigate(['/curso-detalle', curso.id]);
   }

@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private apiUrl = 'https://presenteprofe.cl/api/v1/auth';
+  private apiUrl = 'http://presenteprofe.cl/api/v1';
 
   constructor(private http: HttpClient, private storage: Storage) { 
     this.storage.create();
@@ -18,15 +18,17 @@ export class AuthService {
 
   login(correo: string, password: string): Observable<any> {
     const body = { correo, password };
-    return this.http.post(`${this.apiUrl}`, body).pipe(
+    return this.http.post(`${this.apiUrl}/auth`, body).pipe(
       tap(async (response: any) => {
         if (response.data) {
           // Guardar el ID del usuario
           await this.storage.set('user_id', response.data.id);
+  
           // Guardar el token de autenticación
           if (response.auth && response.auth.token) {
             await this.storage.set('auth_token', response.auth.token);
           }
+  
           // Guardar perfil y nombre completo del usuario
           await this.storage.set('user_perfil', response.data.perfil);
           await this.storage.set('nombre_completo', response.data.nombre_completo);
@@ -59,27 +61,36 @@ export class AuthService {
       'Authorization': `Bearer ${token}`  // Agregar el token en los headers
     });
 
-    return this.http.get(`${this.apiUrl}/me`, { headers });  // Hacer la solicitud a la API con los headers
+    return this.http.get(`${this.apiUrl}/auth/me`, { headers });  // Hacer la solicitud a la API con los headers
   }
 
   async getUserId(): Promise<string | null> {
     return await this.storage.get('user_id');
   }
 
-  async getCursosPorCorreo(correo: string): Promise<Observable<any>> {
-    const token = await this.getToken(); // Obtener el token almacenado
-    console.log('Token de autenticación:', token);  // Verificar que el token esté presente y correcto
-  
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`  // Usar el token en los headers
-    });
-  
-    // Hacer la solicitud al endpoint con el correo como parámetro de consulta
-    return this.http.get(`${this.apiUrl}/cursos?user=${correo}`, { headers });
+  // Obtener los cursos del usuario autenticado o por correo
+async getCursos(correo?: string): Promise<Observable<any>> {
+  const token = await this.getToken();  // Obtener el token almacenado
+
+  if (!token) {
+    throw new Error('No token found, user is not authenticated.');
   }
-  
-  
-  
+
+  // Configurar los headers con el token de autenticación
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`  // Incluir el token en los headers
+  });
+
+  // Crear la URL con el parámetro de consulta "user" si se proporciona el correo
+  let url = `${this.apiUrl}/cursos`;
+  if (correo) {
+    url += `?user=${correo}`;
+  }
+
+  // Hacer la solicitud GET a la API
+  return this.http.get(url, { headers });
+}
+
   
   async getUserProfile(): Promise<string | null> {
     return await this.storage.get('user_perfil');
