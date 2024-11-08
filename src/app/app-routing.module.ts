@@ -27,6 +27,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/welcomealum/welcomealum.module').then( m => m.WelcomealumPageModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'detalle-curso',
+    loadChildren: () => import('./detalle-curso/detalle-curso.module').then( m => m.DetalleCursoPageModule)
+  },
+
+
+  
+
+
+
 
 ];
 

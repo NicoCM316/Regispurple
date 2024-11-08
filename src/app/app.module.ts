@@ -5,7 +5,10 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';  // Asegúrate de importar HttpClientModule
+import { QRCodeModule } from 'angularx-qrcode';  // Para la generación de QR codes
+import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
+import { HttpClientModule } from '@angular/common/http';  // Para las solicitudes HTTP
+import { NgxScannerQrcodeComponent } from 'ngx-scanner-qrcode';
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,8 +16,10 @@ import { HttpClientModule } from '@angular/common/http';  // Asegúrate de impor
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    IonicStorageModule.forRoot(),
-    HttpClientModule  // Añade HttpClientModule aquí
+    NgxScannerQrcodeModule,  
+    QRCodeModule,  // Módulo para QR codes
+    IonicStorageModule.forRoot(),  // Configuración de almacenamiento local
+    HttpClientModule  // Añadido para manejar solicitudes HTTP
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
