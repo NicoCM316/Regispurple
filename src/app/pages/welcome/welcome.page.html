@@ -14,7 +14,11 @@
       </ion-header>
       <ion-content class="ion-padding">
         <ion-list>
-          <ion-item (click)="cerrarSesion()">
+          <ion-item (click)="irACambiarContrasena()">
+            <ion-icon name="person-outline" slot="start"></ion-icon> <!-- Ícono de perfil -->
+            <ion-label>Perfil</ion-label>
+          </ion-item>     
+          <ion-item (click)="cerrarSesion()" class="danger-item">
             <ion-icon name="log-out-outline" slot="start"></ion-icon>
             <ion-label>Cerrar sesión</ion-label>
           </ion-item>
@@ -25,7 +29,7 @@
     <div class="ion-page" id="main-content">
       <ion-header>
         <ion-toolbar>
-          <ion-title>Bienvenido, {{ nombreCompleto }}</ion-title>
+          <ion-title>Bienvenido, {{ nombre }}</ion-title>
           <ion-buttons slot="end">
             <ion-menu-button></ion-menu-button>
           </ion-buttons>
@@ -54,8 +58,5 @@
         </ion-card-content>
       </ion-card>      
     </div>
-
-    <!-- Contenedor de botones en la parte inferior de la pantalla -->
-
   </div>
 </ion-content>

@@ -170,7 +170,7 @@ export class AuthService {
     );
   }
 
-  async unirseACursoPorCodigo(codigoCurso: string): Promise<Observable<any>> {
+  async registrarAsistencia(codigoCurso: string): Promise<Observable<any>> {
     const headers = await this.getAuthHeaders();
     const url = `${this.apiUrl}/clases/${codigoCurso}/asistencia`;
     return this.http.post(url, {}, { headers }).pipe(

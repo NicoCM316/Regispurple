@@ -25,7 +25,7 @@ export class WelcomealumPage implements OnInit {
     private authService: AuthService,
     private alertController: AlertController,
     private router: Router
-  ) {}
+  ) { }
 
   async ngOnInit() {
     try {
@@ -42,7 +42,7 @@ export class WelcomealumPage implements OnInit {
           this.perfil = response.data.perfil;
           this.correoUsuario = response.data.correo;
           this.imgPerfil = response.data.img;
-
+          this.nombre = response.data.nombre;
           if (this.correoUsuario) {
             console.log('Correo del usuario:', this.correoUsuario);
             console.log('Perfil del usuario:', this.perfil);
@@ -66,12 +66,12 @@ export class WelcomealumPage implements OnInit {
   irACambiarContrasena() {
     this.router.navigate(['/profile']);
   }
-  
+
   async getCursosInscritos() {
     try {
       const response = await this.authService.getCursosInscritosEstudiante();
       console.log('Cursos inscritos obtenidos:', response);
-  
+
       // Verifica si response es un objeto que contiene cursos
       if (response && response['cursos']) {
         this.cursos = response['cursos']; // Accede a la propiedad cursos del objeto
@@ -84,8 +84,7 @@ export class WelcomealumPage implements OnInit {
       this.cursos = []; // Asegúrate de manejar el estado de error limpiamente
     }
   }
-  
-  
+
   cerrarSesion() {
     if (confirm('¿Desea cerrar sesión?')) {
       this.router.navigate(['/login']);
@@ -102,7 +101,6 @@ export class WelcomealumPage implements OnInit {
     console.log('ID del curso seleccionado:', curso.id); // Verificar que el ID esté presente
     this.router.navigate(['/detalle-est', curso.id], { state: { curso: curso } });
   }
-  
 
   scanQRCode() {
     BarcodeScanner.checkPermission({ force: true }).then((status) => {
@@ -148,7 +146,7 @@ export class WelcomealumPage implements OnInit {
 
   async matricularEnCurso(courseCode: string) {
     try {
-      (await this.authService.unirseACursoPorCodigo(courseCode)).subscribe(
+      (await this.authService.registrarAsistencia(courseCode)).subscribe(
         (response) => {
           console.log('Enrolled successfully:', response);
           this.showScanResult('Enrolled successfully in course: ' + courseCode);
@@ -171,6 +169,38 @@ export class WelcomealumPage implements OnInit {
       return false;
     }
   }
+  async mostrarInputCodigoCurso() {
+    const alert = await this.alertController.create({
+      header: 'Inscribirse en Curso',
+      inputs: [
+        {
+          name: 'codigo',
+          type: 'text',
+          placeholder: 'Ingrese el código del curso',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Inscripción cancelada');
+          },
+        },
+        {
+          text: 'Inscribirse',
+          handler: (data) => {
+            if (data.codigo) {
+              this.matricularEnCurso(data.codigo);
+            } else {
+              console.error('El código está vacío.');
+            }
+          },
+        },
+      ],
+    });
 
-  
+    await alert.present();
+  }
 }

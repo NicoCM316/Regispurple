@@ -1,5 +1,5 @@
 #content {
-  background-image: url(../../../../assets/img/bg-welcome.jpg);
+  background-image: url(../../../../assets/img/bg-app.jpg);
   font-family: sans-serif;
   height: 100vh;
   width: 100%;
@@ -13,41 +13,46 @@
   padding-bottom: 60px;
 }
 
+.danger-item {
+  --color: var(--ion-color-danger); /* Aplica el color rojo */
+  --ion-color-base: var(--ion-color-danger); /* Asegura que el fondo también sea rojo si es necesario */
+}
+
+/* Contenedor de scroll para las tarjetas */
 /* Contenedor de scroll para las tarjetas */
 #scrollable-container {
   width: 85vw;
-  max-height: 100vh; /* Ajustar la altura máxima si es necesario */
-  overflow-y: auto;
+  max-height: 70vh; /* Ajustar la altura máxima para permitir el scroll vertical */
+  overflow-y: scroll; /* Forzar el scroll vertical */
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 12m;
-
+  gap: 15px; /* Espacio entre las tarjetas */
+  margin-top: 1em;
 }
 
+/* Estilos de las tarjetas */
 .card-wrapper {
-  width: 90%;
-  max-height: 35vh; /* Ajustar la altura máxima si es necesario */
+  width: 90%; /* Asegurar que ocupe todo el ancho del contenedor */
+  min-height: 60%; /* Fijar una altura mínima */
   display: flex;
   flex-direction: column;
   background-color: #000000f1;
   border-radius: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease-in-out;
   border: solid 3px #000000;
+  padding: 15px;
 }
 
-.card-wrapper:hover {
-  transform: scale(1.05);
-}
-
+/* Imágenes dentro de las tarjetas */
 .card-wrapper img {
   width: 100%;
-  height: 30%;
+  height: 30%; /* Altura específica para las imágenes */
   object-fit: cover;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
+
 
 .button-container {
   position: absolute;

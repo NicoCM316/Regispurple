@@ -45,6 +45,7 @@ export class WelcomePage implements OnInit {
           this.perfil = response.data.perfil;
           this.correoUsuario = response.data.correo;
           this.imgPerfil = response.data.img;
+          this.nombre = response.data.nombre;
           if (this.correoUsuario) {
             this.obtenerCursosPorCorreo(this.correoUsuario);
   
@@ -65,23 +66,24 @@ export class WelcomePage implements OnInit {
   }
   async obtenerCursosPorCorreo(correo: string) {
     try {
-      const cursosObs = await this.authService.getCursosPorCorreo(correo);
-      const response = await cursosObs.toPromise();
-      console.log('Cursos obtenidos:', response);
-  
-      // Verificar si los cursos contienen el código de matrícula
-      this.cursos = response.cursos ? response.cursos.map((curso: any) => {
-        return {
-          ...curso,
-          codigo_matricula: curso.codigo_matricula  // Asegurarse de agregar el código de matrícula
-        };
-      }) : [];
-  
-      console.log('Cursos con código de matrícula:', this.cursos);  // Verificar que el código esté presente
+        const cursosObs = await this.authService.getCursosPorCorreo(correo);
+        const response = await cursosObs.toPromise();
+        console.log('Cursos obtenidos:', response);
+
+        // Verificar si los cursos contienen el código de matrícula y convertirlo a string
+        this.cursos = response.cursos ? response.cursos.map((curso: any) => {
+            return {
+                ...curso,
+                codigo_matricula: curso.codigo_matricula ? String(curso.codigo_matricula) : 'Sin código'  // Convertir a string o asignar un valor predeterminado
+            };
+        }) : [];
+
+        console.log('Cursos con código de matrícula:', this.cursos);  // Verificar que el código esté presente y sea string
     } catch (error) {
-      console.error('Error al obtener los cursos por correo:', error);
+        console.error('Error al obtener los cursos por correo:', error);
     }
-  }
+}
+
   
 
   // Abrir formulario para crear una clase en un curso específico
