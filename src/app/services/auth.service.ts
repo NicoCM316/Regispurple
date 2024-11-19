@@ -1,19 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders  } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
-import { tap } from 'rxjs/operators';
-
+import { tap, catchError } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'https://www.presenteprofe.cl/api/v1';  // Ajuste para evitar la barra adicional
 
-  private apiUrl = 'http://presenteprofe.cl/api/v1';
-
-  constructor(private http: HttpClient, private storage: Storage) { 
+  constructor(private http: HttpClient, private storage: Storage) {
     this.storage.create();
+  }
+
+  private async getAuthHeaders(): Promise<HttpHeaders> {
+    const token = await this.getToken();
+    if (!token) {
+      throw new Error('No authenticated');
+    }
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
   }
 
   login(correo: string, password: string): Observable<any> {
@@ -21,24 +31,30 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth`, body).pipe(
       tap(async (response: any) => {
         if (response.data) {
-          // Guardar el ID del usuario
-          await this.storage.set('user_id', response.data.id);
-  
-          // Guardar el token de autenticación
-          if (response.auth && response.auth.token) {
+          if (response.auth?.token) {
             await this.storage.set('auth_token', response.auth.token);
           }
-  
-          // Guardar perfil y nombre completo del usuario
+          await this.storage.set('user_id', response.data.id);
           await this.storage.set('user_perfil', response.data.perfil);
           await this.storage.set('nombre_completo', response.data.nombre_completo);
         }
+      }),
+      catchError((error) => {
+        console.error('Error en login:', error);
+        if (error.status === 0) {
+          console.error('Network error: Please check if the backend server is running and accessible.');
+        } else if (error.status === 404) {
+          console.error('Invalid credentials provided.');
+        } else if (error.status === 500) {
+          console.error('Server error, please try again later.');
+        }
+        return throwError(() => new Error('Failed to log in'));
       })
     );
   }
 
   async saveToken(token: string): Promise<void> {
-    await this.storage.set('auth_token', token);
+    localStorage.setItem('authToken', token);
   }
 
   async getToken(): Promise<string | null> {
@@ -46,55 +62,221 @@ export class AuthService {
   }
 
   recuperarPassword(correo: string): Observable<any> {
-    const body = { correo };  // Envía el correo electrónico a la API
-    return this.http.post(`${this.apiUrl}/recuperar`, body);
+    const body = { correo };
+    return this.http.post(`${this.apiUrl}/recuperar`, body).pipe(
+      catchError((error) => {
+        console.error('Error al recuperar contraseña:', error);
+        return throwError(() => new Error('Failed to recover password'));
+      })
+    );
   }
 
-  // Guardar el perfil y el nombre completo del usuario en el almacenamiento local
   async saveUserProfile(perfil: string, nombre_completo: string): Promise<void> {
-  await this.storage.set('user_perfil', perfil);
-  await this.storage.set('nombre_completo', nombre_completo);
+    await this.storage.set('user_perfil', perfil);
+    await this.storage.set('nombre_completo', nombre_completo);
   }
-  async getUserInfo(): Promise<Observable<any>> {
-    const token = await this.getToken();  // Obtener el token almacenado
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`  // Agregar el token en los headers
-    });
 
-    return this.http.get(`${this.apiUrl}/auth/me`, { headers });  // Hacer la solicitud a la API con los headers
+  async getUserInfo(): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/auth/me`, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error obteniendo información del usuario:', error);
+        return throwError(() => new Error('Failed to fetch user info'));
+      })
+    );
   }
 
   async getUserId(): Promise<string | null> {
     return await this.storage.get('user_id');
   }
 
-  // Obtener los cursos del usuario autenticado o por correo
-async getCursos(correo?: string): Promise<Observable<any>> {
-  const token = await this.getToken();  // Obtener el token almacenado
-
-  if (!token) {
-    throw new Error('No token found, user is not authenticated.');
+  async getCursosPorCorreo(correo: string): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/cursos`, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error obteniendo cursos por correo:', error);
+        return throwError(() => new Error('Failed to fetch courses'));
+      })
+    );
   }
 
-  // Configurar los headers con el token de autenticación
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`  // Incluir el token en los headers
-  });
-
-  // Crear la URL con el parámetro de consulta "user" si se proporciona el correo
-  let url = `${this.apiUrl}/cursos`;
-  if (correo) {
-    url += `?user=${correo}`;
+  async getCursoInscritoPorId(cursoId: string): Promise<any> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/estudiante/cursos/${cursoId}`;
+    return lastValueFrom(
+      this.http.get<any>(url, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error obteniendo el curso inscrito por ID:', error);
+          return throwError(() => new Error('Failed to fetch enrolled course by ID'));
+        })
+      )
+    );
   }
 
-  // Hacer la solicitud GET a la API
-  return this.http.get(url, { headers });
+  async crearCurso(data: any): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    return this.http.post(`${this.apiUrl}/cursos`, data, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al crear curso:', error);
+        return throwError(() => new Error('Failed to create course'));
+      })
+    );
+  }
+
+  async crearClase(id: number, claseData: any): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/cursos/${id}/clase`;
+    return this.http.post(url, claseData, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al crear clase:', error);
+        return throwError(() => new Error('Failed to create class'));
+      })
+    );
+  }
+
+  async getCursoPorID(cursoID: string): Promise<any> {
+    const headers = await this.getAuthHeaders();
+    return lastValueFrom(
+      this.http.get(`${this.apiUrl}/cursos/${cursoID}`, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error obteniendo curso por ID:', error);
+          return throwError(() => new Error('Failed to fetch course by ID'));
+        })
+      )
+    );
+  }
+
+  async getCursosEstudianteMatriculados(cursoID: string, userId: string): Promise<any> {
+    const headers = await this.getAuthHeaders();
+    return lastValueFrom(
+      this.http.get(`${this.apiUrl}/estudiante/${userId}/cursos/${cursoID}`, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error obteniendo curso por ID:', error);
+          return throwError(() => new Error('Failed to fetch course by ID'));
+        })
+      )
+    );
+  }
+
+  async matricularseEnCurso(codigoCurso: string): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    const body = { codigoCurso };
+    const url = `${this.apiUrl}/cursos/matricular`;
+    return this.http.post(url, body, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al matricularse en el curso:', error);
+        return throwError(() => new Error('Failed to enroll in course'));
+      })
+    );
+  }
+
+  async unirseACursoPorCodigo(codigoCurso: string): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/clases/${codigoCurso}/asistencia`;
+    return this.http.post(url, {}, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al unirse al curso:', error);
+        return throwError(() => new Error('Failed to join course'));
+      })
+    );
+  }
+
+  async getClasesPorCursoId(cursoId: number | string): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    return this.http.get<any>(`${this.apiUrl}/cursos/${cursoId}/clase`, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error obteniendo las clases del curso:', error);
+        return throwError(() => new Error('Failed to fetch classes for the course'));
+      })
+    );
+  }
+
+  async obtenerHistorialAsistencia(cursoId: number, Code: number): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/cursos/${cursoId}/clases/${Code}/asistentes`;
+    return this.http.get<any>(url, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al obtener el historial de asistencia:', error);
+        return throwError(() => new Error('Failed to fetch attendance history'));
+      })
+    );
+  }
+
+  //anuncio 
+  async crearAnuncio(cursoId: string, data: { titulo: string; mensaje: string }): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/cursos/${cursoId}/anuncios`; // URL basada en la imagen que compartiste
+    return this.http.post(url, data, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al crear anuncio del curso:', error);
+        return throwError(() => new Error('Failed to create course announcement'));
+      })
+    );
+  }
+
+  async getAnunciosPorCursoId(cursoId: string): Promise<any[]> {
+    const headers = await this.getAuthHeaders();
+    const url = `https://www.presenteprofe.cl/api/v1/cursos/${cursoId}/anuncios`; // Verifica que la URL esté correctamente formada
+    return lastValueFrom(
+      this.http.get<any[]>(url, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error obteniendo anuncios del curso:', error);
+          console.error('Detalles del error:', error.message, error.status, error.error);
+          return throwError(() => new Error('Failed to fetch course announcements'));
+        })
+      )
+    );
+  }
+
+
+  async getCursosInscritosEstudiante(): Promise<{ message: string, cursos: any[] }> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/estudiante/cursos`;
+    return lastValueFrom(
+      this.http.get<{ message: string, cursos: any[] }>(url, { headers }).pipe(
+        catchError((error) => {
+          console.error('Error obteniendo los cursos inscritos del estudiante:', error);
+          return throwError(() => new Error('Failed to fetch enrolled courses'));
+        })
+      )
+    );
+  }
+
+  async reportarInasistencia(cursoId: string, data: { fecha: string; mensaje: string }): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders();
+    const url = `${this.apiUrl}/estudiante/cursos/${cursoId}/reportar-inasistencia`;
+    return this.http.post(url, data, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error al reportar inasistencia:', error);
+        return throwError(() => new Error('Failed to report absence'));
+      })
+    );
+  }
+
+  async getInasistenciasPorCursoId(cursoId: string): Promise<any[]> {
+  const headers = await this.getAuthHeaders();
+  const url = `${this.apiUrl}/cursos/${cursoId}/inasistencias`;
+  return lastValueFrom(
+    this.http.get<any[]>(url, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error obteniendo inasistencias del curso:', error);
+        return throwError(() => new Error('Failed to fetch absences for the course'));
+      })
+    )
+  );
 }
 
-  
-  async getUserProfile(): Promise<string | null> {
-    return await this.storage.get('user_perfil');
-  }
-  
+async cambiarContrasena(data: { password: string }): Promise<Observable<any>> {
+  const headers = await this.getAuthHeaders();
+  const url = `${this.apiUrl}/usuarios/password`;
+  return this.http.put(url, data, { headers }).pipe(
+    catchError((error) => {
+      console.error('Error al cambiar la contraseña:', error);
+      return throwError(() => new Error('Failed to change password'));
+    })
+  );
 }
 
+
+
+}

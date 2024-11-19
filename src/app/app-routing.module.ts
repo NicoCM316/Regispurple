@@ -5,12 +5,12 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+    path: 'login',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -28,14 +28,26 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'detalle-curso',
-    loadChildren: () => import('./detalle-curso/detalle-curso.module').then( m => m.DetalleCursoPageModule)
+    path: 'detalle/:id',
+    loadChildren: () => import('./pages/detalle/detalle.module').then(m => m.DetallePageModule),
+    canActivate: [AuthGuard]
   },
-
-
+  {
+    path: 'detalle/:id/clase/:code',
+    loadChildren: () => import('./pages/clase/clase.module').then(m => m.ClasePageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'detalle-est/:id',
+    loadChildren: () => import('./pages/detalle-est/detalle-est.module').then( m => m.DetalleEstPageModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  }
   
 
-
+    
 
 
 ];

@@ -3,75 +3,50 @@
   font-family: sans-serif;
   height: 100vh;
   width: 100%;
-  min-height: 100vh;
   background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 6em;
+  padding-top: 3em;
   padding-bottom: 60px;
-  overflow-y: hidden;
 }
 
-.scroll-container-wrapper {
-  width: 90vw; /* Ajustado a 90% del ancho de la ventana */
-  height: 32vh; /* Mantiene la altura anterior */
-  overflow: hidden; /* Oculta cualquier contenido que sobresalga */
+/* Contenedor de scroll para las tarjetas */
+#scrollable-container {
+  width: 85vw;
+  max-height: 100vh; /* Ajustar la altura máxima si es necesario */
+  overflow-y: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #00000068;
-  border-radius: 8px;
-  background-color: #676767;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 4em; /* Mantiene el margen superior */
-}
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12m;
 
-.horizontal-scroll {
-  display: flex;
-  align-items: center;
-  overflow-x: auto; /* Permite el desplazamiento horizontal */
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  white-space: nowrap; /* Asegura que los elementos no se envuelvan en la siguiente línea */
-}
-
-.scroll-container {
-  display: flex;
-  align-items: center;
 }
 
 .card-wrapper {
-  flex: none; /* Evita que el tamaño de las tarjetas cambie */
-  width: 220px; /* Tamaño de las tarjetas */
-  height: auto; /* Ajusta la altura automáticamente */
-  margin-right: 20px; /* Ajusta el margen entre las tarjetas para una mejor separación */
+  width: 90%;
+  max-height: 35vh; /* Ajustar la altura máxima si es necesario */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff; /* Fondo blanco para las tarjetas */
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #000000f1;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+  border: solid 3px #000000;
 }
 
-.card-wrapper:last-child {
-  margin-right: 0; /* Elimina el margen derecho de la última tarjeta para alinearse correctamente */
+.card-wrapper:hover {
+  transform: scale(1.05);
 }
 
-.card img {
-  width: 100%; /* Ajusta la imagen al 100% del ancho de la tarjeta */
-  height: auto; /* Mantiene la proporción de la imagen */
-  max-height: 120px; /* Reducido un poco más desde 160px */
-  object-fit: cover; /* Ajusta la imagen sin distorsionar */
-}
-
-.card-body {
-  padding: 15px;
-  text-align: center;
+.card-wrapper img {
+  width: 100%;
+  height: 30%;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .button-container {
@@ -79,45 +54,35 @@
   bottom: 0;
   width: 100%;
   display: flex;
-  border: groove;
-  border-color: #000000;
-  border-radius: 20px 20px 0px 0px; 
   justify-content: space-around;
-  padding: 5px;
-  background-color: hsl(0, 0%, 15%); /* Fondo semi-transparente */
+  padding: 7px;
+  background-color: #1a1a1a;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.btn {
-  flex: 1;
-  text-align: center;
-  font-size: 14px;
-  background-color: hsl(0, 0%, 15%);
-  color: #ffffff;
-  border-radius: 20px;
+
+.btn:hover {
+  transform: scale(1.1);
 }
 
-#cont-title {  
-  position: absolute;
-  top: 0; /* Posición en la parte superior de la pantalla */
-  width: 100%;
-  display: flex;
-  border: groove;
-  border-color: #000000;
-  border-radius: 0px 0px 20px 20px; /* Bordes redondeados en la parte inferior */
-  justify-content: space-around;
-  padding: 5px;
-  background-color: hsl(0, 0%, 33%); /* Fondo semi-transparente */
-}
-
-#cont-title h3 {
-  color: #fff;
+.img-perfil {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
   margin-top: 10px;
-  font-size: 18px;
-  font-weight: 300; /* Usar font-weight más ligero */
-  letter-spacing: 8px; /* Reducir ligeramente el espaciado de letras para más legibilidad */
-  text-align: center;
-  text-shadow: 4px 4px 6px rgba(128, 128, 128, 0.692); /* Mejora el sombreado para más contraste */
-  text-transform: uppercase;
-  margin: 20px 0 20px 0; /* Ajuste más preciso de márgenes */
-  line-height: 1.2; /* Mejora la separación entre las líneas */
+  border: solid 3px #000000;
+}
+
+.perfil-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  
+}
+
+.perfil-info h3,
+.perfil-info p {
+  margin: 0;
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
-import { ModalController, AlertController, Platform } from '@ionic/angular';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { Browser } from '@capacitor/browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcomealum',
@@ -11,57 +11,51 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
   styleUrls: ['./welcomealum.page.scss'],
 })
 export class WelcomealumPage implements OnInit {
-
   cursos: any[] = [];
-  userId: string | null = '';  
+  userId: string | null = '';
   nombreCompleto: string = '';
   perfil: string = '';
-  correoUsuario: string = '';  
-  imgPerfil: string = '';  
-  codigoMatriculaQR: string = '';
+  nombre: string = '';
+  correoUsuario: string = '';
+  imgPerfil: string = '';
+  cursoID: string = '';
   scannedData: any;
 
-  items = [
-    { title: 'Card title 1', text: 'Descripción de la tarjeta 1' },
-    { title: 'Card title 2', text: 'Descripción de la tarjeta 2' },
-  ];
-  
-  config = {
-    fps: 10,
-    vibrate: 400,
-    isBeep: true,
-    decode: 'once'
-  };
-  
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private menu: MenuController,
     private authService: AuthService,
     private alertController: AlertController,
-    private modalController: ModalController,
-    private platform: Platform,
-    private barcodeScanner: BarcodeScanner,
-  ) { }
+    private router: Router
+  ) {}
 
   async ngOnInit() {
     try {
+      // Obtener y mostrar el token de autenticación en la consola
+      const token = await this.authService.getToken();
+      console.log('Token de autenticación:', token);
+
+      // Obtener la información del usuario
       const userInfo = await this.authService.getUserInfo();
       userInfo.subscribe(
-        (response: any) => {
+        async (response: any) => {
+          console.log('Información del usuario:', response);
           this.nombreCompleto = response.data.nombre_completo;
           this.perfil = response.data.perfil;
           this.correoUsuario = response.data.correo;
           this.imgPerfil = response.data.img;
 
           if (this.correoUsuario) {
-            this.obtenerCursosPorCorreo(this.correoUsuario);
+            console.log('Correo del usuario:', this.correoUsuario);
+            console.log('Perfil del usuario:', this.perfil);
+            console.log('id del usuario:', response.data.id);
+
+            // Llamar a la función para obtener y mostrar los cursos inscritos
+            await this.getCursosInscritos();
           } else {
             console.error('No se pudo obtener el correo del usuario.');
           }
         },
         (error: any) => {
-          console.error('Error al obtener la información del usuario:', error);  
+          console.error('Error al obtener la información del usuario:', error);
         }
       );
     } catch (error) {
@@ -69,55 +63,78 @@ export class WelcomealumPage implements OnInit {
     }
   }
 
-  async obtenerCursosPorCorreo(correo: string) {
+  irACambiarContrasena() {
+    this.router.navigate(['/profile']);
+  }
+  
+  async getCursosInscritos() {
     try {
-      const cursosObs = await this.authService.getCursosPorCorreo(correo);
-      const response = await cursosObs.toPromise();
-      this.cursos = response.cursos ? response.cursos.map((curso: any) => ({
-        ...curso,
-        codigo_matricula: curso.codigo_matricula  
-      })) : [];
+      const response = await this.authService.getCursosInscritosEstudiante();
+      console.log('Cursos inscritos obtenidos:', response);
+  
+      // Verifica si response es un objeto que contiene cursos
+      if (response && response['cursos']) {
+        this.cursos = response['cursos']; // Accede a la propiedad cursos del objeto
+      } else {
+        console.error('La respuesta no contiene la propiedad cursos');
+        this.cursos = [];
+      }
     } catch (error) {
-      console.error('Error al obtener los cursos por correo:', error);
+      console.error('Error al obtener los cursos inscritos:', error);
+      this.cursos = []; // Asegúrate de manejar el estado de error limpiamente
     }
+  }
+  
+  
+  cerrarSesion() {
+    if (confirm('¿Desea cerrar sesión?')) {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  verMisCursos() {
+    console.log('Ver mis cursos');
+    // Aquí puedes agregar la lógica para navegar a la página de "mis cursos"
+    this.router.navigate(['/mis-cursos']);
   }
 
   async verDetallesCurso(curso: any) {
-    const alert = await this.alertController.create({
-      header: 'Detalles del Curso',
-      message: `
-        Nombre: ${curso.nombre}
-        Descripción: ${curso.descripcion}
-        Código Matrícula: ${curso.codigo_matricula}
-      `,
-      buttons: [{ text: 'Cerrar', role: 'cancel' }]
-    });
-    await alert.present();
+    console.log('ID del curso seleccionado:', curso.id); // Verificar que el ID esté presente
+    this.router.navigate(['/detalle-est', curso.id], { state: { curso: curso } });
   }
-
-  cerrarSesion() {
-    if (confirm('¿Desea cerrar sesión?')) {
-      this.router.navigate(['/home']);
-    }
-  }
-
-  openMenu() {
-    this.menu.open();
-  }
+  
 
   scanQRCode() {
-    if (this.platform.is('cordova')) {
-      this.barcodeScanner.scan().then(barcodeData => {
-        console.log('QR Code data:', barcodeData);
-        this.scannedData = barcodeData.text;
-        this.matricularEnCurso(barcodeData.text);  // Aquí se llama a la función para matricularse usando el QR escaneado
-      }).catch(err => {
-        console.log('Error', err);
-      });
-    } else {
-      this.showScanResult('Cordova is not available - Please test on a real device.');
-      console.log('Cordova not available');
-    }
+    BarcodeScanner.checkPermission({ force: true }).then((status) => {
+      if (status.granted) {
+        BarcodeScanner.hideBackground();
+        BarcodeScanner.startScan().then(async (result) => {
+          BarcodeScanner.showBackground();
+          if (result.hasContent) {
+            console.log('QR Code data:', result.content);
+            this.scannedData = result.content;
+
+            if (this.isValidURL(result.content)) {
+              let url = result.content.trim();
+              if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+              }
+              await Browser.open({ url });
+            } else {
+              console.log('Contenido escaneado no es una URL. Intentando registrar en clase...');
+              await this.matricularEnCurso(result.content);
+            }
+          } else {
+            this.showScanResult('No se encontró contenido en el código QR.');
+          }
+        }).catch((err) => {
+          console.error('Error al escanear QR:', err);
+          BarcodeScanner.showBackground();
+        });
+      } else {
+        console.log('Permiso denegado para usar la cámara.');
+      }
+    });
   }
 
   async showScanResult(data: string) {
@@ -129,71 +146,15 @@ export class WelcomealumPage implements OnInit {
     await alert.present();
   }
 
-  async abrirOpcionesQR() {
-    const alert = await this.alertController.create({
-      header: 'Selecciona una opción',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }
-      ]
-    });
-    await alert.present();
-  }
-
-  onCodeResult(event: any) {
-    const result = event;  // Si el código QR viene en el evento
-    console.log('Código QR escaneado:', result);
-    this.matricularEnCurso(result);  // Llamar a la función para matricularse con el código escaneado
-  }
-
-  async enrollInCourse() {
-  const alert = await this.alertController.create({
-    header: 'Join a Course',
-    inputs: [
-      {
-        name: 'courseCode',
-        type: 'text',
-        placeholder: 'Enter Course Code'
-      }
-    ],
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => {
-          console.log('Enrollment cancelled');
-        }
-      },
-      {
-        text: 'Join',
-        handler: (data: any) => {  // Especificar el tipo del parámetro data
-          this.matricularEnCurso(data.courseCode);
-        }
-      }
-    ]
-  });
-
-  await alert.present();
-}
-
-  
-  // Método para matricularse en el curso utilizando el código QR
   async matricularEnCurso(courseCode: string) {
     try {
-      // Reemplazamos {code} en la URL con el valor de courseCode ingresado por el usuario
-      const url = `/api/v1/clases/${courseCode}/asistencia`;
-  
       (await this.authService.unirseACursoPorCodigo(courseCode)).subscribe(
         (response) => {
           console.log('Enrolled successfully:', response);
-          // Mostrar un mensaje de éxito si es necesario
           this.showScanResult('Enrolled successfully in course: ' + courseCode);
         },
         (error) => {
           console.error('Error enrolling in course:', error);
-          // Mostrar un mensaje de error si es necesario
           this.showScanResult('Failed to enroll in course: ' + courseCode);
         }
       );
@@ -201,4 +162,15 @@ export class WelcomealumPage implements OnInit {
       console.error('Error en el proceso de matrícula:', error);
     }
   }
+
+  isValidURL(string: string): boolean {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  
 }

@@ -90,7 +90,6 @@
               "buildTarget": "app:build:development"
             },
             "ci": {
-              "progress": false
             }
           },
           "defaultConfiguration": "development"

@@ -1,5 +1,5 @@
 #content {
-  background-image: url(../../../../assets/img/bg-principal-home.jpg);
+  background-image: url(../../../../assets/img/bg-welcome.jpg);
   font-family: sans-serif;
   height: 100vh;
   width: 100%;
@@ -16,23 +16,25 @@
 /* Contenedor de scroll para las tarjetas */
 #scrollable-container {
   width: 85vw;
-  max-height: 90vh; /* Ajustar la altura máxima si es necesario */
+  max-height: 100vh; /* Ajustar la altura máxima si es necesario */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 12m;
+
 }
 
 .card-wrapper {
-  flex: none;
   width: 90%;
+  max-height: 35vh; /* Ajustar la altura máxima si es necesario */
   display: flex;
   flex-direction: column;
   background-color: #000000f1;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease-in-out;
+  border: solid 3px #000000;
 }
 
 .card-wrapper:hover {
@@ -41,7 +43,7 @@
 
 .card-wrapper img {
   width: 100%;
-  height: auto;
+  height: 30%;
   object-fit: cover;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -59,20 +61,6 @@
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.btn {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #333;
-  color: #ffffff;
-  border-radius: 15px;
-  padding: 0px;
-  max-width: 60px;
-  max-height: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease-in-out;
-}
 
 .btn:hover {
   transform: scale(1.1);
@@ -84,11 +72,14 @@
   border-radius: 50%;
   object-fit: cover;
   margin-top: 10px;
+  border: solid 3px #000000;
 }
 
 .perfil-container {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  
 }
 
 .perfil-info h3,
