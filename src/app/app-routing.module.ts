@@ -33,9 +33,9 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'detalle/:id/clase/:code',
+    path: 'detalle/:id/clase/:codigo',
     loadChildren: () => import('./pages/clase/clase.module').then(m => m.ClasePageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard] // Si tienes un guard para proteger la ruta
   },
   {
     path: 'detalle-est/:id',

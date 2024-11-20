@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, map, switchMap } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -191,9 +191,10 @@ export class AuthService {
     );
   }
 
-  async obtenerHistorialAsistencia(cursoId: number, Code: number): Promise<Observable<any>> {
-    const headers = await this.getAuthHeaders();
-    const url = `${this.apiUrl}/cursos/${cursoId}/clases/${Code}/asistentes`;
+  // En AuthService
+  async obtenerHistorialAsistencia(cursoId: number, codigoClase: string): Promise<Observable<any>> {
+    const headers = await this.getAuthHeaders(); // Asegúrate de que este método devuelva los encabezados correctos con el token de autorización
+    const url = `${this.apiUrl}/cursos/${cursoId}/clase/${codigoClase}`;
     return this.http.get<any>(url, { headers }).pipe(
       catchError((error) => {
         console.error('Error al obtener el historial de asistencia:', error);
@@ -201,6 +202,7 @@ export class AuthService {
       })
     );
   }
+  
 
   //anuncio 
   async crearAnuncio(cursoId: string, data: { titulo: string; mensaje: string }): Promise<Observable<any>> {
@@ -216,17 +218,21 @@ export class AuthService {
 
   async getAnunciosPorCursoId(cursoId: string): Promise<any[]> {
     const headers = await this.getAuthHeaders();
-    const url = `https://www.presenteprofe.cl/api/v1/cursos/${cursoId}/anuncios`; // Verifica que la URL esté correctamente formada
+    const url = `https://www.presenteprofe.cl/api/v1/cursos/${cursoId}/anuncios`;
     return lastValueFrom(
-      this.http.get<any[]>(url, { headers }).pipe(
+      this.http.get<any>(url, { headers }).pipe(
+        map((response) => response.anuncios || []),
         catchError((error) => {
           console.error('Error obteniendo anuncios del curso:', error);
-          console.error('Detalles del error:', error.message, error.status, error.error);
+          if (error.status === 404) {
+            console.error('Curso no encontrado.');
+          }
           return throwError(() => new Error('Failed to fetch course announcements'));
         })
       )
     );
   }
+
 
 
   async getCursosInscritosEstudiante(): Promise<{ message: string, cursos: any[] }> {
@@ -253,18 +259,18 @@ export class AuthService {
     );
   }
 
-  async getInasistenciasPorCursoId(cursoId: string): Promise<any[]> {
-  const headers = await this.getAuthHeaders();
-  const url = `${this.apiUrl}/cursos/${cursoId}/inasistencias`;
-  return lastValueFrom(
-    this.http.get<any[]>(url, { headers }).pipe(
+  async getInasistenciasPorCursoId(cursoId: string) {
+    const headers = await this.getAuthHeaders(); // Espera a que el `Promise` se resuelva
+    const url = `https://www.presenteprofe.cl/api/v1/cursos/${cursoId}/inasistencias`;
+    return this.http.get<any[]>(url, { headers }).pipe(
       catchError((error) => {
         console.error('Error obteniendo inasistencias del curso:', error);
         return throwError(() => new Error('Failed to fetch absences for the course'));
       })
-    )
-  );
-}
+    );
+  }
+  
+  
 
 async cambiarContrasena(data: { password: string }): Promise<Observable<any>> {
   const headers = await this.getAuthHeaders();

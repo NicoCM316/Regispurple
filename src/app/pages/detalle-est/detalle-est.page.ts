@@ -12,6 +12,7 @@ export class DetalleEstPage implements OnInit {
   curso: any;
   clases: any[] = [];
   anuncios: any[] = [];
+  inasistencias: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -30,16 +31,20 @@ export class DetalleEstPage implements OnInit {
   ngOnInit() {
     const cursoId = this.curso?.id || this.route.snapshot.paramMap.get('id');
     console.log('ID del curso en DetalleEstPage:', cursoId);
-
+  
     if (cursoId) {
       this.cargarDetalleCurso(cursoId);
-      this.cargarAnunciosDelCurso(cursoId);
+      this.cargarAnunciosDelCurso(cursoId); // Llama a la función para cargar los anuncios
     }
   }
+  
 
   async cargarDetalleCurso(id: string) {
     try {
+      // Llamada directa sin 'await' al 'subscribe'
       const response = await this.authService.getCursoPorID(id);
+
+      // Verifica que response tenga la estructura esperada
       if (response && response.curso) {
         this.curso = response.curso;
       } else {
@@ -51,6 +56,7 @@ export class DetalleEstPage implements OnInit {
   }
 
   async cargarAnunciosDelCurso(cursoId: string) {
+    console.log('Cargando anuncios para el curso con ID:', cursoId);
     try {
       const anuncios = await this.authService.getAnunciosPorCursoId(cursoId);
       if (anuncios && anuncios.length > 0) {
@@ -58,7 +64,7 @@ export class DetalleEstPage implements OnInit {
         console.log('Anuncios cargados:', this.anuncios);
       } else {
         console.log('No hay anuncios para este curso.');
-        this.anuncios = []; // Asegúrate de limpiar la lista si no hay anuncios
+        this.anuncios = [];
       }
     } catch (error) {
       console.error('Error al cargar los anuncios del curso:', error);
@@ -157,41 +163,4 @@ export class DetalleEstPage implements OnInit {
     await alert.present();
   }
   
-  async cargarInasistenciasDelCurso(cursoId: string) {
-    try {
-      const inasistencias = await this.authService.getInasistenciasPorCursoId(cursoId);
-      if (inasistencias && inasistencias.length > 0) {
-        this.mostrarListaInasistencias(inasistencias);
-      } else {
-        console.log('No se encontraron inasistencias para este curso.');
-        this.alertController.create({
-          header: 'Inasistencias',
-          message: 'No se encontraron inasistencias para este curso.',
-          buttons: ['OK']
-        }).then(alertEl => alertEl.present());
-      }
-    } catch (error) {
-      console.error('Error al cargar las inasistencias del curso:', error);
-    }
-  }
-  
-  async mostrarListaInasistencias(inasistencias: any[]) {
-    const alert = await this.alertController.create({
-      header: 'Lista de Inasistencias',
-      message: this.generarListaInasistencias(inasistencias),
-      buttons: ['Cerrar']
-    });
-  
-    await alert.present();
-  }
-  
-  generarListaInasistencias(inasistencias: any[]): string {
-    let listaHtml = '<ul>';
-    inasistencias.forEach((inasistencia) => {
-      listaHtml += `<li><strong>Fecha:</strong> ${inasistencia.fecha} - <strong>Motivo:</strong> ${inasistencia.mensaje}</li>`;
-    });
-    listaHtml += '</ul>';
-    return listaHtml;
-  }
-
 }
