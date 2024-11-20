@@ -4,7 +4,6 @@ import { AuthService } from '../../services/auth.service';
 import { AlertController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 
-
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.page.html',
@@ -17,7 +16,7 @@ export class DetallePage implements OnInit {
   inasistencias: any[] = [];
   qrData: string = '';
   showQRCode: boolean = false;
-  codigoQR: string = ''; // Variable para almacenar el contenido que se convertirá en QR
+  codigoQR: string = ''; // Variable para almacenar el contenido del QR (código_web)
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +55,10 @@ export class DetallePage implements OnInit {
       console.log('Cargando anuncios para el curso con ID:', cursoId);
       const anuncios = await this.authService.getAnunciosPorCursoId(cursoId);
       this.anuncios = anuncios && anuncios.length > 0 ? anuncios : [];
-      console.log(this.anuncios.length > 0 ? 'Anuncios cargados:' : 'No hay anuncios para este curso.', this.anuncios);
+      console.log(
+        this.anuncios.length > 0 ? 'Anuncios cargados:' : 'No hay anuncios para este curso.',
+        this.anuncios
+      );
     } catch (error) {
       console.error('Error al cargar los anuncios del curso:', error);
     }
@@ -69,33 +71,136 @@ export class DetallePage implements OnInit {
         (response: any) => {
           this.clases = response.clases || [];
           console.log('Datos de las clases:', this.clases);
-          this.clases.forEach(clase => console.log('Clase:', clase, 'Código web de la clase:', clase.codigo_web));
+          this.clases.forEach(clase =>
+            console.log('Clase:', clase, 'Código web de la clase:', clase.codigo_web)
+          );
         },
-        (error) => console.error('Error al cargar las clases del curso:', error)
+        error => console.error('Error al cargar las clases del curso:', error)
       );
     } catch (error) {
       console.error('Error al solicitar las clases del curso:', error);
     }
   }
 
-  verDetallesClase(cursoId: number, clase: any) {
-    if (clase && clase.codigo_web) {
-      console.log('Código web de la clase:', clase.codigo_web);
-      this.router.navigate([`/detalle/${cursoId}/clase/${clase.codigo_web}`], {
-        state: { cursoId, codigo_web: clase.codigo_web }
-      });
-    } else {
-      console.error('El código web de la clase no está definido:', clase);
+  async cargarInasistenciasDelCurso(cursoId: string) {
+    try {
+      const inasistenciasObservable = await this.authService.getInasistenciasPorCursoId(cursoId);
+      const inasistencias = await firstValueFrom(inasistenciasObservable);
+      this.inasistencias = inasistencias && inasistencias.length > 0 ? inasistencias : [];
+      console.log(
+        this.inasistencias.length > 0 ? 'Inasistencias cargadas:' : 'No se encontraron inasistencias.',
+        this.inasistencias
+      );
+    } catch (error) {
+      console.error('Error al cargar las inasistencias del curso:', error);
     }
+  }
+
+  obtenerDiaSemana(fecha: string): string {
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const fechaObj = new Date(fecha);
+    return diasSemana[fechaObj.getUTCDay()];
+  }
+
+  async crearClase(cursoId: number) {
+    const alert = await this.alertController.create({
+      header: 'Crear Nueva Clase',
+      inputs: [
+        {
+          name: 'fecha',
+          type: 'date',
+          placeholder: 'Fecha de la clase',
+        },
+        {
+          name: 'horaInicio',
+          type: 'time',
+          placeholder: 'Hora de inicio',
+        },
+        {
+          name: 'horaTermino',
+          type: 'time',
+          placeholder: 'Hora de término',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Crear',
+          handler: async (data) => {
+            console.log('Datos de la nueva clase:', data);
+            const claseData = {
+              fecha: data.fecha,
+              hora_inicio: data.horaInicio,
+              hora_termino: data.horaTermino,
+            };
+
+            try {
+              const response = await this.authService.crearClase(cursoId, claseData);
+              response.subscribe(
+                (res: any) => {
+                  console.log('Clase creada exitosamente:', res);
+                  this.alertController
+                    .create({
+                      header: 'Éxito',
+                      message: 'Clase creada exitosamente',
+                      buttons: ['OK'],
+                    })
+                    .then((alertEl) => alertEl.present());
+
+                  // Refresca la lista de clases
+                  this.cargarClasesDelCurso(cursoId.toString());
+                },
+                (err) => {
+                  console.error('Error al crear la clase:', err);
+                }
+              );
+            } catch (error) {
+              console.error('Error en la creación de la clase:', error);
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   async verDetallesAnuncio(anuncio: any) {
     const alert = await this.alertController.create({
       header: anuncio.titulo,
       message: anuncio.mensaje,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  verDetallesClase(cursoId: number, clase: any) {
+    if (clase && clase.codigo_web) {
+      console.log('Código web de la clase:', clase.codigo_web);
+      this.router.navigate([`/detalle/${cursoId}/clase/${clase.codigo_web}`], {
+        state: { cursoId, codigo_web: clase.codigo_web },
+      });
+    } else {
+      console.error('El código web de la clase no está definido:', clase);
+    }
+  }
+
+  mostrarQRCode(codigoWeb: string) {
+    if (codigoWeb) {
+      this.codigoQR = codigoWeb; // Asigna el código web de la clase al contenido del QR
+      this.showQRCode = true; // Muestra el QR en la interfaz
+      console.log('Código QR generado:', this.codigoQR);
+    } else {
+      console.error('El código web de la clase no está definido.');
+    }
+  }
+
+  cerrarQRCode() {
+    this.showQRCode = false; // Oculta el QR
+    this.codigoQR = ''; // Limpia el contenido del QR
   }
 
   async crearAnuncio(cursoId: string) {
@@ -105,13 +210,13 @@ export class DetallePage implements OnInit {
         {
           name: 'titulo',
           type: 'text',
-          placeholder: 'Título del anuncio'
+          placeholder: 'Título del anuncio',
         },
         {
           name: 'mensaje',
           type: 'textarea',
-          placeholder: 'Mensaje del anuncio'
-        }
+          placeholder: 'Mensaje del anuncio',
+        },
       ],
       buttons: [
         {
@@ -119,7 +224,7 @@ export class DetallePage implements OnInit {
           role: 'cancel',
           handler: () => {
             console.log('Creación de anuncio cancelada');
-          }
+          },
         },
         {
           text: 'Crear',
@@ -141,91 +246,11 @@ export class DetallePage implements OnInit {
             } else {
               console.error('El título y el mensaje son obligatorios');
             }
-          }
-        }
-      ]
-    });
-  
-    await alert.present();
-  }
-  
-  obtenerDiaSemana(fecha: string): string {
-    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    const fechaObj = new Date(fecha);
-    return diasSemana[fechaObj.getUTCDay()];
-  }
-
-  async cargarInasistenciasDelCurso(cursoId: string) {
-    try {
-      const inasistenciasObservable = await this.authService.getInasistenciasPorCursoId(cursoId);
-      const inasistencias = await firstValueFrom(inasistenciasObservable);
-      this.inasistencias = inasistencias && inasistencias.length > 0 ? inasistencias : [];
-      console.log(this.inasistencias.length > 0 ? 'Inasistencias cargadas:' : 'No se encontraron inasistencias.', this.inasistencias);
-    } catch (error) {
-      console.error('Error al cargar las inasistencias del curso:', error);
-    }
-  }
-  async crearClase(cursoId: number) {
-    const alert = await this.alertController.create({
-      header: 'Crear Nueva Clase',
-      inputs: [
-        {
-          name: 'fecha',
-          type: 'date',
-          placeholder: 'Fecha de la clase'
+          },
         },
-        {
-          name: 'horaInicio',
-          type: 'time',
-          placeholder: 'Hora de inicio'
-        },
-        {
-          name: 'horaTermino',
-          type: 'time',
-          placeholder: 'Hora de término'
-        }
       ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Crear',
-          handler: async (data) => {
-            console.log('Datos de la nueva clase:', data);
-            const claseData = {
-              fecha: data.fecha,
-              hora_inicio: data.horaInicio,
-              hora_termino: data.horaTermino
-            };
-  
-            try {
-              const response = await this.authService.crearClase(cursoId, claseData);
-              response.subscribe(
-                (res: any) => {
-                  console.log('Clase creada exitosamente:', res);
-                  this.alertController.create({
-                    header: 'Éxito',
-                    message: 'Clase creada exitosamente',
-                    buttons: ['OK']
-                  }).then(alertEl => alertEl.present());
-  
-                  // Refresca la lista de clases
-                  this.cargarClasesDelCurso(cursoId.toString());
-                },
-                (err) => {
-                  console.error('Error al crear la clase:', err);
-                }
-              );
-            } catch (error) {
-              console.error('Error en la creación de la clase:', error);
-            }
-          }
-        }
-      ]
     });
-  
+
     await alert.present();
   }
 }

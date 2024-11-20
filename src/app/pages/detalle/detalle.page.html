@@ -27,29 +27,34 @@
   <ion-button expand="block" color="primary" (click)="crearAnuncio(curso.id)">Nuevo anuncio</ion-button>
 
   <!-- Tabla de registro de clases -->
-  <!-- Tabla de registro de clases -->
-<ion-grid *ngIf="clases.length > 0">
-  <ion-row>
-    <ion-col size="3">Día</ion-col>
-    <ion-col size="5">Fecha</ion-col>
-    <ion-col size="4">Acciones</ion-col>
-  </ion-row>
+  <ion-grid *ngIf="clases.length > 0">
+    <ion-row>
+      <ion-col size="3">Día</ion-col>
+      <ion-col size="5">Fecha</ion-col>
+      <ion-col size="4">Acciones</ion-col>
+    </ion-row>
 
-  <ion-row *ngFor="let clase of clases; let i = index">
-    <ion-col size="3" class="text-center">{{ obtenerDiaSemana(clase.fecha) }}</ion-col>
-    <ion-col size="5" class="text-center">{{ clase.fecha | date: 'dd \'de\' MMMM, yyyy' }}</ion-col>
-    <ion-col size="4" class="text-center">
-      <ion-button expand="block" fill="solid" color="primary" (click)="verDetallesClase(curso.id, clase)">
-        Ver Detalles
-      </ion-button>
-    </ion-col>
-  </ion-row>
-</ion-grid>
-
-
- 
+    <ion-row *ngFor="let clase of clases; let i = index">
+      <ion-col size="3" class="text-center">{{ obtenerDiaSemana(clase.fecha) }}</ion-col>
+      <ion-col size="5" class="text-center">{{ clase.fecha | date: 'dd \'de\' MMMM, yyyy' }}</ion-col>
+      <ion-col size="4" class="text-center">
+        <ion-button expand="block" fill="solid" color="primary" (click)="verDetallesClase(curso.id, clase)">
+          Ver Detalles
+        </ion-button>
+        <ion-button expand="block" fill="outline" color="secondary" (click)="mostrarQRCode(clase.codigo_web)">
+          Generar QR
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <p *ngIf="clases.length === 0">No se encontraron clases para este curso.</p>
+
+  <!-- QR Code Section -->
+  <div *ngIf="showQRCode" class="qr-container">
+    <qrcode [qrdata]="codigoQR" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+    <ion-button color="danger" (click)="cerrarQRCode()">Cerrar QR</ion-button>
+  </div>
 
   <!-- Lista de anuncios del curso -->
   <ion-list *ngIf="anuncios.length > 0">
@@ -77,5 +82,4 @@
     </ion-item>
   </ion-list>
   <p *ngIf="inasistencias.length === 0" class="no-data-message">No se encontraron inasistencias.</p>
-  
 </ion-content>
