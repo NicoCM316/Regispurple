@@ -4,9 +4,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="detalle-clase">
   <!-- Información de la clase -->
-  <ion-card *ngIf="claseInfo">
+  <ion-card *ngIf="claseInfo" class="info-card">
     <ion-card-header>
       <ion-card-title>{{ claseInfo.nombre }}</ion-card-title>
     </ion-card-header>
@@ -17,18 +17,26 @@
   </ion-card>
 
   <!-- Total de asistentes -->
-  <ion-card *ngIf="totalAsistencias > 0">
+  <ion-card *ngIf="totalAsistencias > 0" class="asistentes-card">
     <ion-card-content>
       <p><strong>Total de asistentes:</strong> {{ totalAsistencias }}</p>
     </ion-card-content>
   </ion-card>
 
   <!-- Lista de asistentes -->
-  <ion-list *ngIf="asistencia.length > 0">
-    <ion-item *ngFor="let estudiante of asistencia">
-      <p>{{ estudiante.nombre_estudiante }} - {{ estudiante.hora_asistencia }} - Presente: {{ estudiante.presente }}</p>
-    </ion-item>
-  </ion-list>
-
-  <p *ngIf="asistencia.length === 0">No se encontraron registros de asistencia.</p>
+  <ion-card class="asistencia-card">
+    <ion-card-header>
+      <ion-card-title>Lista de Asistencia</ion-card-title>
+    </ion-card-header>
+    <ion-list *ngIf="asistencia.length > 0">
+      <ion-item *ngFor="let estudiante of asistencia" class="asistencia-item">
+        <ion-label>
+          <p><strong>ID:</strong> {{ estudiante.id }}</p>
+          <p><strong>Hora:</strong> {{ estudiante.hora_asistencia }}</p>
+          <p><strong>Presente:</strong> {{ estudiante.presente }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <p *ngIf="asistencia.length === 0" class="no-asistencia">No se encontraron registros de asistencia.</p>
+  </ion-card>
 </ion-content>

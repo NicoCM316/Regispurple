@@ -261,7 +261,7 @@ export class AuthService {
 
   async getInasistenciasPorCursoId(cursoId: string) {
     const headers = await this.getAuthHeaders(); // Espera a que el `Promise` se resuelva
-    const url = `https://www.presenteprofe.cl/api/v1/cursos/${cursoId}/inasistencias`;
+    const url = `https://www.presenteprofe.cl/api/v1/cursos/${cursoId}/inaistencias`;
     return this.http.get<any[]>(url, { headers }).pipe(
       catchError((error) => {
         console.error('Error obteniendo inasistencias del curso:', error);

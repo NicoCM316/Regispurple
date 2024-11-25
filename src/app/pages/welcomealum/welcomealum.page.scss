@@ -1,3 +1,4 @@
+/* Fondo fijo */
 #content {
   background-image: url(../../../../assets/img/bg-app.jpg);
   font-family: sans-serif;
@@ -5,6 +6,7 @@
   width: 100%;
   background-size: cover;
   background-position: center;
+  background-attachment: fixed; /* Fondo fijo */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -13,78 +15,106 @@
   padding-bottom: 60px;
 }
 
-.danger-item {
-  --color: var(--ion-color-danger); /* Aplica el color rojo */
-  --ion-color-base: var(--ion-color-danger); /* Asegura que el fondo también sea rojo si es necesario */
-}
-
-/* Contenedor de scroll para las tarjetas */
-/* Contenedor de scroll para las tarjetas */
+/* Contenedor de las tarjetas desplazables */
 #scrollable-container {
-  width: 85vw;
-  max-height: 70vh; /* Ajustar la altura máxima para permitir el scroll vertical */
-  overflow-y: scroll; /* Forzar el scroll vertical */
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Espacio entre las tarjetas */
-  margin-top: 1em;
-}
-
-/* Estilos de las tarjetas */
-.card-wrapper {
-  width: 90%; /* Asegurar que ocupe todo el ancho del contenedor */
-  min-height: 60%; /* Fijar una altura mínima */
-  display: flex;
-  flex-direction: column;
-  background-color: #000000f1;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease-in-out;
-  border: solid 3px #000000;
-  padding: 15px;
-}
-
-/* Imágenes dentro de las tarjetas */
-.card-wrapper img {
+  flex: 1;
   width: 100%;
-  height: 30%; /* Altura específica para las imágenes */
-  object-fit: cover;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  max-height: calc(100vh - 140px); /* Altura máxima para no invadir botones */
+  overflow-y: auto; /* Desplazamiento vertical */
+  padding: 10px;
 }
 
+/* Estilo de las tarjetas */
+.custom-card {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
 
+.custom-card .row {
+  display: flex;
+  width: 100%;
+}
+
+.custom-card .col-img {
+  flex: 1;
+  max-width: 150px;
+}
+
+.custom-card .col-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom-card .col-content {
+  flex: 2;
+  padding: 16px;
+}
+
+.custom-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-card .card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.custom-card .card-text {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.custom-card .user-info p {
+  margin: 0;
+  font-size: 0.85em;
+  color: #777;
+}
+
+.custom-card ion-button {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+/* Botones fijos */
 .button-container {
-  position: absolute;
+  position: fixed; /* Fijar botones en la parte inferior */
   bottom: 0;
   width: 100%;
   display: flex;
   justify-content: space-around;
-  padding: 7px;
+  padding: 10px;
   background-color: #1a1a1a;
   border-radius: 24px 24px 0 0;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
-
-.btn:hover {
-  transform: scale(1.1);
-}
-
+/* Imagen de perfil */
 .img-perfil {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   margin-top: 10px;
-  border: solid 3px #000000;
+  border: solid 3px #000;
 }
 
+/* Perfil */
 .perfil-container {
   display: flex;
   align-items: center;
   flex-direction: column;
-  
 }
 
 .perfil-info h3,

@@ -20,51 +20,37 @@ export class WelcomealumPage implements OnInit {
   imgPerfil: string = '';
   cursoID: string = '';
   scannedData: any;
+  result: string = ''; // Declarada para la plantilla
 
   constructor(
     private authService: AuthService,
     private alertController: AlertController,
     private router: Router
-  ) { }
+  ) {}
 
   async ngOnInit() {
     try {
-      // Obtener y mostrar el token de autenticación en la consola
       const token = await this.authService.getToken();
       console.log('Token de autenticación:', token);
 
-      // Obtener la información del usuario
       const userInfo = await this.authService.getUserInfo();
       userInfo.subscribe(
         async (response: any) => {
-          console.log('Información del usuario:', response);
           this.nombreCompleto = response.data.nombre_completo;
           this.perfil = response.data.perfil;
           this.correoUsuario = response.data.correo;
           this.imgPerfil = response.data.img;
           this.nombre = response.data.nombre;
-          if (this.correoUsuario) {
-            console.log('Correo del usuario:', this.correoUsuario);
-            console.log('Perfil del usuario:', this.perfil);
-            console.log('id del usuario:', response.data.id);
 
-            // Llamar a la función para obtener y mostrar los cursos inscritos
+          if (this.correoUsuario) {
             await this.getCursosInscritos();
-          } else {
-            console.error('No se pudo obtener el correo del usuario.');
           }
         },
-        (error: any) => {
-          console.error('Error al obtener la información del usuario:', error);
-        }
+        (error: any) => console.error('Error al obtener la información del usuario:', error)
       );
     } catch (error) {
       console.error('Error en el proceso de autenticación o carga de cursos:', error);
     }
-  }
-
-  irACambiarContrasena() {
-    this.router.navigate(['/profile']);
   }
 
   async getCursosInscritos() {
@@ -72,16 +58,15 @@ export class WelcomealumPage implements OnInit {
       const response = await this.authService.getCursosInscritosEstudiante();
       console.log('Cursos inscritos obtenidos:', response);
 
-      // Verifica si response es un objeto que contiene cursos
       if (response && response['cursos']) {
-        this.cursos = response['cursos']; // Accede a la propiedad cursos del objeto
+        this.cursos = response['cursos'];
       } else {
         console.error('La respuesta no contiene la propiedad cursos');
         this.cursos = [];
       }
     } catch (error) {
       console.error('Error al obtener los cursos inscritos:', error);
-      this.cursos = []; // Asegúrate de manejar el estado de error limpiamente
+      this.cursos = [];
     }
   }
 
@@ -91,18 +76,18 @@ export class WelcomealumPage implements OnInit {
     }
   }
 
-  verMisCursos() {
-    console.log('Ver mis cursos');
-    // Aquí puedes agregar la lógica para navegar a la página de "mis cursos"
-    this.router.navigate(['/mis-cursos']);
+  irACambiarContrasena() {
+    // Navega a la página de cambio de contraseña
+    this.router.navigate(['/profile']);
   }
 
-  async verDetallesCurso(curso: any) {
-    console.log('ID del curso seleccionado:', curso.id); // Verificar que el ID esté presente
+  verDetallesCurso(curso: any) {
+    // Navega a los detalles del curso pasando el ID del curso
+    console.log('ID del curso seleccionado:', curso.id);
     this.router.navigate(['/detalle-est', curso.id], { state: { curso: curso } });
   }
 
-  scanQRCode() {
+  async scanQRCode() {
     BarcodeScanner.checkPermission({ force: true }).then((status) => {
       if (status.granted) {
         BarcodeScanner.hideBackground();
@@ -139,7 +124,7 @@ export class WelcomealumPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'QR Code Scanned',
       message: `Data: ${data}`,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
   }
@@ -169,6 +154,7 @@ export class WelcomealumPage implements OnInit {
       return false;
     }
   }
+
   async mostrarInputCodigoCurso() {
     const alert = await this.alertController.create({
       header: 'Inscribirse en Curso',
