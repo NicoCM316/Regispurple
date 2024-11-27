@@ -1,72 +1,83 @@
 #content {
-  background-image: url(../../../../assets/img/bg-app.jpg);
-  font: sans-serif;
-  height: 100vh; /* Usa vh en lugar de % */
+  background-image: url(../../../../assets/img/backpurple.jpg);
+  font-family: sans-serif;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
   width: 100%;
   min-height: 100vh;
   background-size: cover;
   background-position: center;
   display: flex;
+  justify-content: center;
+  align-items: center; /* Asegura que el contenido esté centrado verticalmente */
 }
 
-
 #container-home-cont {
-  --background: #d7d8d448;
+  background-color: white; /* Fondo blanco sólido */
   font-size: 16px;
   line-height: 20px;
-  color: #ffffff;
+  color: #000000; /* Texto negro para contraste */
   padding: 15px;
   max-width: 350px;
   min-width: 80%;
-  height: 100vh; /* Ajusta la altura según el contenido */
+  height: auto; /* Ajusta la altura según el contenido */
   max-height: 470px;
-  margin: auto; /* Centra horizontal y verticalmente en flexbox */
-  border-radius: 20px;
-  position: relative; /* Cambiado a relative */
-  background-size: cover;
+  margin: auto; /* Centra horizontal y verticalmente */
+  border-radius: 20px; /* Bordes redondeados */
+  position: relative; /* Para futuros posicionamientos relativos */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega sombra para profundidad */
 }
+
 
 ion-toolbar {
   --background: #4C4745; /* Fondo del toolbar */
-  --color: white;         /* Color del texto en el toolbar */
+  --color: white; /* Color del texto */
 }
 
 ion-title {
+  ---background:white;
   color: hsl(0, 0%, 100%);
   font-size: 35px;
   text-align: center;
-
 }
 
 ion-card-title {
-  color: #ffffff;
+  color: black;
   font-size: 35px;
   text-align: center;
 }
 
 ion-button {
-  --background: #232423; // Color de fondo de los botones
-  --color: #ffffff; // Color del texto de los botones
-  font: 1em sans-serif;
-  --border-color: #00000000; // Color del borde de los inputs
-  --border-radius: 10px; // Radio de los bordes de los inputs
-  --padding-start: 15px; // Espaciado interno del input
-  --padding-end: 15px; // Espaciado interno del input
-  --padding-top: 5px; // Espaciado interno del input
-  --padding-bottom: 10px; // Espaciado interno del in
+  --background: purple; /* Fondo de los botones */
+  --color: #ffffff; /* Texto de los botones */
+  font-family: sans-serif;
+  --border-radius: 10px; /* Bordes redondeados */
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 5px;
+  --padding-bottom: 10px;
+}
 
+ion-button:hover {
+  --background: #4c4c4c; /* Fondo al pasar el mouse */
 }
 
 ion-input {
-  --background: #232423; // Color de fondo de los inputs
-  --color: #ffffff; // Color del texto de los inputs
-  --border-color: #00000000; // Color del borde de los inputs
-  --border-radius: 10px; // Radio de los bordes de los inputs
-  --padding-start: 15px; // Espaciado interno del input
-  --padding-end: 15px; // Espaciado interno del input
-  --padding-top: 5px; // Espaciado interno del input
-  --padding-bottom: 10px; // Espaciado interno del input
+  --background: white; /* Fondo de los inputs */
+  --color: black; /* Color del texto */
+  --border-radius: 10px; /* Bordes redondeados */
+  --padding-start: 15px;
+  --padding-end: 15px;
+  --padding-top: 5px;
+  --padding-bottom: 10px;
+  --placeholder-color: #aaaaaa; /* Color del texto de marcador */
 }
 
+ion-input .input-native {
+  color: white; /* Asegura que el texto ingresado sea visible */
+}
 
-
+ion-item {
+  --background: white; /* Fondo transparente */
+  --box-shadow: none; /* Elimina la sombra */
+  padding: 0; /* Ajusta el padding */
+}
