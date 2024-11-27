@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: row;
   background-color: #fff; /* Cambié el color de fondo de la tarjeta */
-  border: 1px solid #ddd; /* Cambié el borde */
+  border: 1px solid purple; /* Cambié el borde */
   border-radius: 8px;
   margin-bottom: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -71,14 +71,14 @@
 
 .custom-card .card-text {
   font-size: 0.9em;
-  color: #555; /* Cambié el color del texto */
+  color: black; /* Cambié el color del texto */
   margin-bottom: 12px;
 }
 
 .custom-card .user-info p {
   margin: 0;
   font-size: 0.85em;
-  color: #777; /* Cambié el color de la información de usuario */
+  color: black /* Cambié el color de la información de usuario */
 }
 
 .custom-card ion-button {
