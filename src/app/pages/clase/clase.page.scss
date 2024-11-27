@@ -1,5 +1,8 @@
-.detalle-clase {
-    --background: #f3f3f3;
+  .detalle-clase {
+    --background-image: url(../../../../assets/img/backpurple.jpg);
+    background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
     font-family: 'Arial', sans-serif;
     padding: 15px;
   }

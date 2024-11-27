@@ -1,79 +1,53 @@
 #content {
   background-image: url(../../../../assets/img/backpurple.jpg);
-  font: sans-serif;
-  height: 100vh; /* Usa vh en lugar de % */
-  width: 100%;
-  min-height: 100vh;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+  width: 100%; /* Ocupa el 100% de la anchura */
 }
-
 
 #container-home-cont {
-  --background: #d7d8d448;
-  font-size: 16px;
-  line-height: 20px;
-  color: #ffffff;
-  padding: 15px;
-  max-width: 350px;
-  min-width: 80%;
-  height: 100vh; /* Ajusta la altura según el contenido */
-  max-height: 470px;
-  margin: auto; /* Centra horizontal y verticalmente en flexbox */
-  border-radius: 20px;
-  position: relative; /* Cambiado a relative */
-  background-size: cover;
-}
-
-ion-item {
-  --background: 	#800080; // Color de fondo de los items
-  --color: 	#800080; // Color del texto de los items
-  --border-color: 	#800080; // Color del borde de los items
-  --border-radius: 15px; // Radio de los bordes de los items
-}
-
-ion-toolbar {
-  --background: 	#800080; // Cambiar el fondo del toolbar también, si es necesario
-}
-
-ion-input {
-  --background: 	#800080; // Color de fondo de los inputs
-  --color: #ffffff; // Color del texto de los inputs
-  --border-color: 	#800080; // Color del borde de los inputs
-  --border-radius: 10px; // Radio de los bordes de los inputs
-  --padding-start: 15px; // Espaciado interno del input
-  --padding-end: 15px; // Espaciado interno del input
-  --padding-top: 5px; // Espaciado interno del input
-  --padding-bottom: 10px; // Espaciado interno del input
-}
-
-ion-title {
-  color: hsl(0, 0%, 100%);
-  font-size: 35px;
-  text-align: center;
-
+  background-color: transparent;
+  width: 90%; /* Ajusta el ancho según lo desees */
+  max-width: 400px; /* Limita el ancho máximo */
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Agrega una sombra sutil */
+  text-align: center; /* Centra el texto en el contenedor */
 }
 
 ion-card-title {
-  color: 	#800080;
-  font-size: 35px;
-  text-align: center;
-}
-
-ion-card-header {
-  text-align: center;
+  text-align: center; /* Centra el texto en los títulos */
 }
 
 ion-button {
-  --background: 	#800080; // Color de fondo de los botones
-  --color: #ffffff; // Color del texto de los botones
-  font: 1em sans-serif;
-  --border-color: 	#800080; // Color del borde de los inputs
-  --border-radius: 10px; // Radio de los bordes de los inputs
-  --padding-start: 15px; // Espaciado interno del input
-  --padding-end: 15px; // Espaciado interno del input
-  --padding-top: 5px; // Espaciado interno del input
-  --padding-bottom: 10px; // Espaciado interno del in
+  --background: purple; /* Morado */
+  --color: white; /* Color del texto */
+  --border-radius: 8px; /* Bordes redondeados */
+  --padding-start: 20px;
+  --padding-end: 20px;
 }
 
+ion-button:hover {
+  --background: #9c4dcc; /* Color morado más claro cuando se pasa el ratón por encima */
+}
+
+/* Hacer ion-item transparente */
+ion-item {
+  --background: transparent; /* Fondo transparente */
+  --box-shadow: none; /* Elimina la sombra del ion-item */
+  padding: 0; /* Ajusta el padding si es necesario */
+}
+
+/* Hacer input dentro del ion-item también transparente */
+ion-item ion-input {
+  --background: transparent; /* Fondo transparente para el input */
+  --box-shadow: none; /* Elimina la sombra del input */
+}
+
+ion-item ion-input .input-native {
+  color: white; /* Asegura que el texto dentro del input sea visible */
+}

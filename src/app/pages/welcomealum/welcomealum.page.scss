@@ -1,6 +1,6 @@
 /* Fondo fijo */
 #content {
-  background-image: url(../../../../assets/img/bg-app.jpg);
+  background-image: url(../../../../assets/img/backpurple.jpg); /* Cambié la imagen de fondo */
   font-family: sans-serif;
   height: 100vh;
   width: 100%;
@@ -28,8 +28,8 @@
 .custom-card {
   display: flex;
   flex-direction: row;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: #fff; /* Cambié el color de fondo de la tarjeta */
+  border: 1px solid #ddd; /* Cambié el borde */
   border-radius: 8px;
   margin-bottom: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -65,20 +65,20 @@
 .custom-card .card-title {
   font-size: 1.2em;
   font-weight: bold;
-  color: #333;
+  color: #333; /* Cambié el color del título */
   margin-bottom: 8px;
 }
 
 .custom-card .card-text {
   font-size: 0.9em;
-  color: #555;
+  color: #555; /* Cambié el color del texto */
   margin-bottom: 12px;
 }
 
 .custom-card .user-info p {
   margin: 0;
   font-size: 0.85em;
-  color: #777;
+  color: #777; /* Cambié el color de la información de usuario */
 }
 
 .custom-card ion-button {
@@ -92,7 +92,7 @@
   bottom: 0;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-around; /* Cambié la distribución de los botones */
   padding: 10px;
   background-color: #1a1a1a;
   border-radius: 24px 24px 0 0;
@@ -120,4 +120,22 @@
 .perfil-info h3,
 .perfil-info p {
   margin: 0;
+}
+
+/* Botón morado para crear curso */
+ion-button.crearCurso {
+  --background: purple; /* Morado */
+  --color: #ffffff; /* Blanco */
+}
+
+/* Estilo general para todos los botones morados */
+ion-button {
+  --background: purple; /* Morado */
+  --color: white; /* Blanco */
+  --border-radius: 8px; /* Bordes redondeados */
+  --padding: 5px; /* Padding de 5px en todos los lados */
+}
+
+ion-button:hover {
+  --background: #9c4dcc; /* Color morado más claro cuando se pasa el ratón por encima */
 }

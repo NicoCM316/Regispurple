@@ -21,11 +21,12 @@
   </ion-card>
 
   <!-- Botón para reportar inasistencia -->
-  <ion-button expand="block" color="danger" (click)="abrirAlertaReportarInasistencia(curso.id)">
+  <ion-button expand="block" (click)="abrirAlertaReportarInasistencia(curso.id)">
     Reportar Inasistencia
   </ion-button>
 
   <!-- Lista de anuncios del curso -->
+  <ion-card>
   <ion-list *ngIf="anuncios.length > 0">
     <ion-list-header>
       <ion-label>Anuncios del Curso</ion-label>
@@ -35,12 +36,13 @@
         <h2>{{ anuncio.titulo }}</h2>
         <p>{{ anuncio.mensaje }}</p>
       </ion-label>
-      <ion-button slot="end" color="tertiary" (click)="verDetallesAnuncio(anuncio)">Ver</ion-button>
+      <ion-button slot="end" (click)="verDetallesAnuncio(anuncio)">Ver</ion-button>
     </ion-item>
   </ion-list>
   <p *ngIf="anuncios.length === 0" class="no-data-message">No hay anuncios disponibles.</p>
 
   <!-- Lista de inasistencias del curso -->
+
   <ion-list *ngIf="inasistencias.length > 0">
     <ion-list-header>
       <ion-label>Inasistencias del Curso</ion-label>
@@ -52,5 +54,8 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <p *ngIf="inasistencias.length === 0" class="no-data-message">No se encontraron inasistencias.</p>
+</ion-card>
+  <p *ngIf="inasistencias.length === 0" class="no-data-message" style="padding-left: 20px; padding-bottom: 10px; padding-right: 20px;">
+    No se encontraron inasistencias.
+  </p>  
 </ion-content>

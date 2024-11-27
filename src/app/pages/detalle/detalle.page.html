@@ -57,7 +57,8 @@
   </div>
 
   <!-- Lista de anuncios del curso -->
-  <ion-list *ngIf="anuncios.length > 0">
+   <ion-card>
+  <ion-list *ngIf="anuncios.length > 0" class="transparent-list">
     <ion-list-header>
       <ion-label>Anuncios del Curso</ion-label>
     </ion-list-header>
@@ -69,8 +70,8 @@
       <ion-button slot="end" class="botonmorado" (click)="verDetallesAnuncio(anuncio)">Ver</ion-button>
     </ion-item>
   </ion-list>
-
-  <ion-list *ngIf="inasistencias.length > 0">
+  
+  <ion-list *ngIf="inasistencias.length > 0" class="transparent-list">
     <ion-list-header>
       <ion-label>Inasistencias del Curso</ion-label>
     </ion-list-header>
@@ -81,5 +82,9 @@
       </ion-label>
     </ion-item>
   </ion-list>
-  <p *ngIf="inasistencias.length === 0" class="no-data-message">No se encontraron inasistencias.</p>
+</ion-card>
+  
+  <p *ngIf="inasistencias.length === 0" class="no-data-message" style="padding-left: 20px; padding-bottom: 10px; padding-right: 20px;">
+    No se encontraron inasistencias.
+  </p>  
 </ion-content>
