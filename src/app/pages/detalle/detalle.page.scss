@@ -5,3 +5,21 @@
   ion-button {
     font-size: 14px; // Ajusta el tamaño de la fuente si es necesario
   }
+
+  /* styles.css o en un archivo .scss local */
+.botonmorado {
+  --background: #6a0dad; /* Fondo morado */
+  --background-activated: #5c0ba6;
+  --background-focused: #7b1bde;
+  --background-hover: #7b1bde;
+  --color: #ffffff; /* Texto blanco */
+}
+
+/* src/global.scss */
+ion-content {
+  --background: none; /* Quita el color de fondo predeterminado */
+  background-image: url(../../../../assets/img/backpurple.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

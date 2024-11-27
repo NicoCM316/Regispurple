@@ -1,4 +1,4 @@
-<ion-content fullscreen="true">
+<ion-content class="contentBack" fullscreen="true">
   <div id="content">
     <!-- Menú de perfil -->
     <ion-menu side="end" contentId="main-content">
@@ -56,7 +56,7 @@
             <ion-label position="stacked">Nueva Contraseña</ion-label>
             <ion-input type="password" [(ngModel)]="nuevaContrasena" placeholder="Ingrese nueva contraseña"></ion-input>
           </ion-item>
-          <ion-button expand="block" color="primary" (click)="cambiarContrasena()">Cambiar contraseña</ion-button>
+          <ion-button class="bpurple" expand="block" (click)="cambiarContrasena()">Cambiar contraseña</ion-button>
         </ion-card-content>
       </ion-card>
     </div>

@@ -1,5 +1,5 @@
 #content {
-  background-image: url(../../../../assets/img/bg-app.jpg);
+  background-image: url(../../../../assets/img/backpurple.jpg);
   font: sans-serif;
   height: 100vh; /* Usa vh en lugar de % */
   width: 100%;
@@ -27,20 +27,20 @@
 }
 
 ion-item {
-  --background: #232423; // Color de fondo de los items
-  --color: #c1c1c100; // Color del texto de los items
-  --border-color: #00000000; // Color del borde de los items
+  --background: 	#800080; // Color de fondo de los items
+  --color: 	#800080; // Color del texto de los items
+  --border-color: 	#800080; // Color del borde de los items
   --border-radius: 15px; // Radio de los bordes de los items
 }
 
 ion-toolbar {
-  --background: #232423; // Cambiar el fondo del toolbar también, si es necesario
+  --background: 	#800080; // Cambiar el fondo del toolbar también, si es necesario
 }
 
 ion-input {
-  --background: #232423; // Color de fondo de los inputs
+  --background: 	#800080; // Color de fondo de los inputs
   --color: #ffffff; // Color del texto de los inputs
-  --border-color: #00000000; // Color del borde de los inputs
+  --border-color: 	#800080; // Color del borde de los inputs
   --border-radius: 10px; // Radio de los bordes de los inputs
   --padding-start: 15px; // Espaciado interno del input
   --padding-end: 15px; // Espaciado interno del input
@@ -56,7 +56,7 @@ ion-title {
 }
 
 ion-card-title {
-  color: #ffffff;
+  color: 	#800080;
   font-size: 35px;
   text-align: center;
 }
@@ -66,23 +66,14 @@ ion-card-header {
 }
 
 ion-button {
-  --background: #232423; // Color de fondo de los botones
+  --background: 	#800080; // Color de fondo de los botones
   --color: #ffffff; // Color del texto de los botones
   font: 1em sans-serif;
-  --border-color: #00000000; // Color del borde de los inputs
+  --border-color: 	#800080; // Color del borde de los inputs
   --border-radius: 10px; // Radio de los bordes de los inputs
   --padding-start: 15px; // Espaciado interno del input
   --padding-end: 15px; // Espaciado interno del input
   --padding-top: 5px; // Espaciado interno del input
   --padding-bottom: 10px; // Espaciado interno del in
-}
-
-ion-tab-bar {
-  --background: #1c1c1e; /* Color de fondo de la barra de navegación */
-}
-
-ion-tab-button {
-  --color-selected: #1df47a; /* Color de icono y texto al estar seleccionados */
-  --color: #ffffff; /* Color de icono y texto no seleccionados */
 }
 

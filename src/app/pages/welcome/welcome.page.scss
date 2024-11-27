@@ -1,6 +1,6 @@
 /* Fondo fijo */
 #content {
-  background-image: url(../../../../assets/img/bg-app.jpg);
+  background-image: url(../../../../assets/img/backpurple.jpg);
   font-family: sans-serif;
   height: 100vh;
   width: 100%;
@@ -28,8 +28,8 @@
 .custom-card {
   display: flex;
   flex-direction: row;
-  background-color: #fff;
-  border: 1px solid #ddd;
+  background-color: 	#800080;
+  border: 1px solid 	#800080;
   border-radius: 8px;
   margin-bottom: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -65,20 +65,20 @@
 .custom-card .card-title {
   font-size: 1.2em;
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 8px;
 }
 
 .custom-card .card-text {
   font-size: 0.9em;
-  color: #555;
+  color: #ffffff;
   margin-bottom: 12px;
 }
 
 .custom-card .user-info p {
   margin: 0;
   font-size: 0.85em;
-  color: #777;
+  color: #ffffff;
 }
 
 .custom-card ion-button {
@@ -120,4 +120,14 @@
 .perfil-info h3,
 .perfil-info p {
   margin: 0;
+}
+ion-button.crearCurso {
+  --background: #800080; /* Morado */
+  --color: #ffffff;
+}
+
+ion-button {
+  --background: #ffffff; /* Blanco */
+  --color: #000000;      /* Texto negro */
+  padding-top: 2%;
 }
